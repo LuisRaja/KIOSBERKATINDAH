@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota - <%= order.order_number %></title>
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <style>
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            @page { margin: 10mm; }
+        }
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 font-[Plus_Jakarta_Sans]">
+    <div class="no-print max-w-2xl mx-auto px-4 py-6 text-center">
+        <button onclick="window.print()" class="bg-burgundy text-white font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all">
+            Cetak Nota
+        </button>
+        <a href="/admin/orders" class="bg-gray-200 text-gray-700 font-semibold px-6 py-2.5 rounded-xl text-sm hover:bg-gray-300 transition-all ml-2">
+            Kembali
+        </a>
+    </div>
+
+    <div class="max-w-2xl mx-auto px-4 py-4">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8" id="nota">
+            <div class="text-center border-b-2 border-burgundy border-dashed pb-4 mb-4">
+                <h1 class="text-xl font-extrabold text-burgundy"><%= settings.store_name || 'Kios Berkat Indah' %></h1>
+                <p class="text-xs text-gray-500 mt-1"><%= settings.store_address || '' %></p>
+                <p class="text-xs text-gray-500"><%= settings.store_hours || '' %></p>
+                <p class="text-xs text-gray-500">Telp: <%= settings.whatsapp_number || '' %></p>
+            </div>
+
+            <div class="text-center mb-4">
+                <h2 class="text-base font-bold text-burgundy uppercase tracking-wider">Nota Pesanan</h2>
+                <p class="text-xs text-gray-500 mt-1">No: <strong class="text-gray-800"><%= order.order_number %></strong></p>
+                <p class="text-xs text-gray-500"><%= new Date(order.created_at).toLocaleString('id-ID') %></p>
+            </div>
+
+            <div class="bg-gray-50 rounded-xl p-4 text-xs space-y-1 mb-4">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Pelanggan</span>
+                    <span class="font-semibold text-gray-800"><%= order.customer_name %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Telepon</span>
+                    <span class="font-semibold text-gray-800"><%= order.customer_phone %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Tanggal Ambil</span>
+                    <span class="font-semibold text-gray-800"><%= order.pickup_date %> <%= order.pickup_time %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Metode Ambil</span>
+                    <span class="font-semibold text-gray-800"><%= order.shipping_method %></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Metode Bayar</span>
+                    <span class="font-semibold text-gray-800"><%= order.payment_method || '-' %></span>
+                </div>
+                <% if (order.notes) { %>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Catatan</span>
+                    <span class="font-semibold text-gray-800"><%= order.notes %></span>
+                </div>
+                <% } %>
+            </div>
+
+            <table class="w-full text-xs border-collapse">
+                <thead>
+                    <tr class="bg-burgundy text-white">
+                        <th class="py-2 px-3 text-left">No</th>
+                        <th class="py-2 px-3 text-left">Produk</th>
+                        <th class="py-2 px-3 text-center">Qty</th>
+                        <th class="py-2 px-3 text-right">Harga</th>
+                        <th class="py-2 px-3 text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% order.items.forEach((item, i) => { %>
+                    <tr class="border-b border-gray-100">
+                        <td class="py-2 px-3"><%= i + 1 %></td>
+                        <td class="py-2 px-3 font-semibold text-gray-800"><%= item.product_name %></td>
+                        <td class="py-2 px-3 text-center"><%= item.quantity %></td>
+                        <td class="py-2 px-3 text-right">Rp <%= Number(item.product_price).toLocaleString('id-ID') %></td>
+                        <td class="py-2 px-3 text-right font-semibold">Rp <%= Number(item.subtotal).toLocaleString('id-ID') %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+                <tfoot>
+                    <tr class="bg-gray-50">
+                        <td colspan="4" class="py-2 px-3 text-right font-bold text-burgundy text-sm">Total</td>
+                        <td class="py-2 px-3 text-right font-extrabold text-burgundy text-sm">Rp <%= Number(order.total).toLocaleString('id-ID') %></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="py-1 px-3 text-right text-gray-400 text-[10px]">Pembayaran</td>
+                        <td class="py-1 px-3 text-right text-[10px] font-semibold <%= order.payment_status === 'paid' ? 'text-emerald-600' : 'text-amber-600' %>">
+                            <%= order.payment_status === 'paid' ? 'LUNAS' : 'BELUM DIBAYAR' %>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="border-t-2 border-burgundy border-dashed mt-6 pt-4 text-center text-[10px] text-gray-400">
+                <p>Terima kasih telah berbelanja di <%= settings.store_name || 'Kios Berkat Indah' %></p>
+                <p class="mt-1">Barang yang sudah dibeli tidak dapat dikembalikan</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

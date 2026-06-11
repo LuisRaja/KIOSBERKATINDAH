@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kios Berkat Indah - Katalog Digital Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#4A0E17">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body class="min-h-screen flex flex-col antialiased selection:bg-gold selection:text-burgundy">
+    <div id="announcement-bar" class="hidden"></div>
+
+    <header
+        class="sticky top-0 z-40 bg-burgundy text-white shadow-md backdrop-blur-md bg-opacity-95 border-b border-gold border-opacity-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                    <span class="text-gold">Kios</span> Berkat Indah
+                </h1>
+                <p class="text-[10px] sm:text-xs text-gray-300 tracking-widest uppercase font-medium">Kios Murah Area
+                    Rewarangga Selatan</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openChatModal()"
+                    class="p-3 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
+                    aria-label="Bantuan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DDA15E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </button>
+                <div class="relative">
+                    <button id="btn-user-menu" onclick="openUserMenu()"
+                        class="relative p-3 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
+                        aria-label="Akun saya">
+                        <i data-lucide="user" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>
+                    </button>
+                    <div id="user-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <div id="dropdown-logged-in" class="hidden">
+                            <div id="user-dropdown-header" class="px-4 py-2 border-b border-gray-100">
+                                <p id="dropdown-user-name" class="text-sm font-bold text-gray-800"></p>
+                                <p id="dropdown-user-email" class="text-[10px] text-gray-400"></p>
+                            </div>
+                            <button onclick="showChangeName()" class="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                <i data-lucide="edit" class="w-4 h-4 text-burgundy"></i> Ubah User ID
+                            </button>
+                            <button onclick="showChangePassword()" class="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                                <i data-lucide="key" class="w-4 h-4 text-burgundy"></i> Ubah Password
+                            </button>
+                            <button onclick="logoutUser()" class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 flex items-center gap-2">
+                                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                            </button>
+                        </div>
+                        <div id="dropdown-logged-out">
+                            <button onclick="openAuthModal()" class="w-full text-left px-4 py-3 text-sm font-semibold text-burgundy hover:bg-gray-50 flex items-center gap-2">
+                                <i data-lucide="log-in" class="w-4 h-4"></i> Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="toggleCart(true)"
+                    class="relative p-3 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
+                    aria-label="Buka keranjang belanja">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-1 bg-gold text-burgundy text-xs font-black rounded-full w-5 h-5 flex items-center justify-center scale-0 transition-transform duration-300">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div
+            class="mb-8 p-6 sm:p-8 bg-gradient-to-br from-[#5A121D] to-[#4A0E17] rounded-3xl text-white relative overflow-hidden shadow-lg border border-gold border-opacity-20">
+            <div class="relative z-10 max-w-xl">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span
+                        class="text-[10px] sm:text-xs font-bold text-gold bg-white bg-opacity-10 px-3 py-1 rounded-full uppercase tracking-wider">Belanja
+                        Praktis Dari Rumah</span>
+                    <span id="store-status-badge"
+                        class="text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300"></span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold mt-3 tracking-tight">Katalog Sembako & Kebutuhan
+                    Kelontong Utama</h2>
+                <p class="text-xs sm:text-sm text-gray-200 mt-2 leading-relaxed">Pilih barang kebutuhan utama rumah
+                    tangga Anda di bawah ini, tentukan jumlahnya, lalu ORDER dan pilih metode pembayaran.</p>
+            </div>
+            <div
+                class="absolute right-0 bottom-0 top-0 opacity-10 pointer-events-none hidden md:flex items-center justify-center pr-10">
+                <i data-lucide="store" class="w-48 h-48 text-white"></i>
+            </div>
+        </div>
+
+        <div id="landing-menu-container"
+            class="flex flex-col items-center justify-center py-12 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 transition-all">
+            <i data-lucide="shopping-cart" class="w-16 h-16 text-gold mb-4"></i>
+            <h3 class="text-xl font-bold text-burgundy mb-2">Siap Memenuhi Kebutuhan Rumah Tangga Anda?</h3>
+            <p class="text-sm text-gray-500 text-center max-w-md mb-6">Silakan klik tombol di bawah ini untuk membuka
+                menu katalog produk sembako dan kebutuhan harian Kios Berkat Indah.</p>
+            <button onclick="activateShoppingMenu()"
+                class="bg-burgundy text-white hover:bg-opacity-90 font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-lg text-base tracking-wide flex items-center gap-3 group">
+                <span>AYO BELANJA</span>
+                <i data-lucide="arrow-right"
+                    class="w-5 h-5 text-gold group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+
+        <div id="api-error" class="hidden mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 flex items-center gap-2">
+            <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0"></i>
+            <span>Gagal memuat data dari server. Pastikan server <strong>npm start</strong> sudah berjalan dan akses melalui <strong>http://localhost:3000</strong>.</span>
+        </div>
+
+        <div id="catalog-section" class="hidden space-y-6">
+            <div
+                class="grid grid-cols-1 md:grid-cols-12 items-stretch md:items-end gap-4 bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
+                <div class="md:col-span-4 min-w-0">
+                    <label
+                        class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                        <i data-lucide="filter" class="w-3.5 h-3.5 text-gold"></i> Pilih Kategori Produk
+                    </label>
+                    <div class="relative">
+                        <select id="category-dropdown" onchange="filterByCategory(this.value)"
+                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy appearance-none cursor-pointer">
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 min-w-0">
+                    <label
+                        class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                        <i data-lucide="search" class="w-3.5 h-3.5 text-gold"></i> Cari Nama Produk
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="search-input" oninput="handleSearch(this.value)"
+                            placeholder="Cari beras, mi instan, kopi, rokok..."
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                        <div
+                            class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-3 text-xs text-gray-400 font-medium md:text-right self-center md:pb-3">
+                    Kategori: <span id="active-category-label" class="text-burgundy font-bold uppercase">Semua
+                        Produk</span>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </main>
+
+    <div id="order-confirm-overlay" onclick="closeConfirmation()"
+        class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="order-confirm-modal"
+        class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div
+                class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
+                        <i data-lucide="clipboard-list" class="w-5 h-5 text-burgundy"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">Konfirmasi Pesanan</h3>
+                        <p class="text-[11px] text-gray-400">Periksa kembali pesanan Anda</p>
+                    </div>
+                </div>
+                <button onclick="closeConfirmation()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup konfirmasi">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5 confirm-body space-y-4"></div>
+            <div class="sticky bottom-0 bg-white rounded-b-3xl border-t border-gray-100 p-4 flex flex-col gap-2">
+                <!-- Mode: Payment Selection -->
+                <div id="confirm-payment-buttons" class="hidden">
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btn-prev-step" onclick="prevFormStep()"
+                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            Kembali
+                        </button>
+                        <button id="btn-submit-order" onclick="submitOrder()" disabled
+                            class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-60">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            Buat Pesanan
+                        </button>
+                    </div>
+                </div>
+                <!-- Mode: Done -->
+                <div id="confirm-done-buttons">
+                    <button class="confirm-ok w-full bg-burgundy hover:bg-opacity-90 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md">
+                        <i data-lucide="check" class="w-4 h-4"></i>
+                        OK, Saya Mengerti
+                    </button>
+                    <button onclick="closeConfirmation()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 px-4 rounded-xl transition-all duration-300 text-sm">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-drawer-overlay" onclick="toggleCart(false)"
+        class="fixed inset-0 bg-black bg-opacity-60 z-50 pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="cart-drawer"
+        class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div
+            class="p-6 bg-burgundy text-white flex items-center justify-between border-b border-gold border-opacity-20">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shopping-cart" class="text-gold"></i>
+                <h2 class="text-lg font-bold tracking-tight">Daftar Belanja Anda</h2>
+            </div>
+            <button onclick="toggleCart(false)" class="p-1.5 hover:bg-white hover:bg-opacity-10 rounded-full transition-colors" aria-label="Tutup keranjang">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
+
+        <div class="p-6 border-t border-gray-100 bg-[#FAF9F7] space-y-3 max-h-[60vh] overflow-y-auto no-scrollbar">
+            <!-- Step 1: Data Pemesan -->
+            <div id="cart-step-1">
+                <div>
+                    <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1"
+                        for="customer-name">Nama Pemesan *</label>
+                    <input type="text" id="customer-name" oninput="handleCustomerInput()"
+                        placeholder="Contoh: Ibu Maria Mery"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                    <span id="customer-name-error" class="error-message"></span>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1"
+                        for="customer-phone">Nomor Telepon / WA *</label>
+                    <input type="tel" id="customer-phone" oninput="handleCustomerInput()" placeholder="Contoh: 0812XXXXXXXX"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                    <span id="customer-phone-error" class="error-message"></span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Metode Pengambilan
+                        Barang *</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label
+                            class="flex items-center gap-2 bg-white border border-burgundy p-2.5 rounded-xl cursor-pointer text-xs font-semibold text-burgundy">
+                            <input type="radio" name="shipping-method" value="Ambil Sendiri" checked>
+                            Ambil di Kios
+                        </label>
+                        <label
+                            class="flex items-center gap-2 bg-gray-100 border border-gray-200 p-2.5 rounded-xl cursor-not-allowed text-xs font-semibold text-gray-400 relative group">
+                            <input type="radio" name="shipping-method" value="Kirim Lokasi" disabled>
+                            Kirim ke Lokasi
+                            <span
+                                class="absolute -top-7 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Belum
+                                tersedia</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="pickup-schedule-box" class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1"
+                            for="pickup-date">Tanggal Ambil *</label>
+                        <input type="date" id="pickup-date" onchange="validateForm()"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                        <span id="pickup-date-error" class="error-message"></span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1"
+                            for="pickup-time">Jam Ambil *</label>
+                        <input type="time" id="pickup-time" onchange="validateForm()"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                        <span id="pickup-time-error" class="error-message"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Catatan untuk Kios</label>
+                    <textarea id="order-notes" placeholder="Opsional: tulis catatan untuk pesanan Anda..." rows="2"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all"></textarea>
+                </div>
+                <div class="border-t border-gray-200 pt-3 space-y-1">
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>Jumlah Keseluruhan Barang:</span>
+                        <span id="cart-total-qty" class="font-semibold text-gray-800">0 Item</span>
+                    </div>
+                    <div class="flex justify-between items-baseline">
+                        <span class="text-sm font-bold text-burgundy">Total Estimasi:</span>
+                        <span id="cart-total-price" class="text-xl font-extrabold text-burgundy">Rp 0</span>
+                    </div>
+                </div>
+
+                <button id="btn-next-step" onclick="nextFormStep()" disabled
+                    class="w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-60">
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    Lengkapi Data untuk Lanjut
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Login / Register Modal -->
+    <div id="auth-overlay" onclick="closeAuthModal()"
+        class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="auth-modal"
+        class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-burgundy rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-gold"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm" id="auth-modal-title">Masuk / Daftar</h3>
+                        <p class="text-[11px] text-gray-400" id="auth-modal-sub">Akses fitur tracking pesanan</p>
+                    </div>
+                </div>
+                <button onclick="closeAuthModal()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="auth-options" class="p-5 space-y-3">
+                <button id="btn-auth-phone" onclick="showAuthForm('phone')"
+                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded-xl text-sm transition-all">
+                    <i data-lucide="smartphone" class="w-5 h-5 text-burgundy"></i>
+                    Lanjut dengan Nomor Telepon
+                </button>
+                <button id="btn-auth-email" onclick="showAuthForm('email')"
+                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded-xl text-sm transition-all">
+                    <i data-lucide="mail" class="w-5 h-5 text-burgundy"></i>
+                    Lanjut dengan Email
+                </button>
+                <div class="flex items-center gap-2 py-1">
+                    <span class="flex-1 h-px bg-gray-200"></span>
+                    <span class="text-xs text-gray-400">atau</span>
+                    <span class="flex-1 h-px bg-gray-200"></span>
+                </div>
+                <button onclick="window.location.href='/api/auth/google'"
+                    class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded-xl text-sm transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Lanjutkan dengan Google
+                </button>
+                <p class="text-xs text-gray-400 text-center pt-1">
+                    Dengan mendaftar, kamu menyetujui <a href="#" onclick="event.preventDefault(); showTerms()" class="text-burgundy font-semibold underline">syarat & ketentuan</a>
+                </p>
+            </div>
+
+            <div id="auth-form-wrapper" class="hidden p-5 space-y-4">
+                <button onclick="backToAuthOptions()" class="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors mb-1">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
+                </button>
+                <div id="auth-form">
+                    <div id="auth-name-group">
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Nama</label>
+                        <input type="text" id="auth-name" placeholder="Nama lengkap"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                    </div>
+                    <div id="auth-email-group">
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Email</label>
+                        <input type="email" id="auth-email" placeholder="email@contoh.com"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                    </div>
+                    <div id="auth-phone-group" class="hidden">
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Nomor Telepon</label>
+                        <input type="tel" id="auth-phone-input" placeholder="08XXXXXXXXX"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                    </div>
+                    <div id="auth-password-group">
+                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" id="auth-password" placeholder="Minimal 6 karakter"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                    </div>
+                </div>
+                <p id="auth-error" class="text-xs text-red-600 hidden"></p>
+                <button id="btn-auth-submit" onclick="submitAuth()"
+                    class="w-full bg-burgundy hover:bg-opacity-90 text-white font-bold py-2.5 rounded-xl text-sm transition-all">
+                    Daftar
+                </button>
+                <div class="text-center">
+                    <p class="text-xs text-gray-400">
+                        <span id="auth-toggle-text">Sudah punya akun?</span>
+                        <button onclick="toggleAuthMode()" class="text-burgundy font-bold underline ml-1" id="auth-toggle-btn">Masuk</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Tracking Modal -->
+    <div id="tracking-overlay" onclick="closeTrackingModal()"
+        class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="tracking-modal"
+        class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="package" class="w-5 h-5 text-emerald-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">Pesanan Saya</h3>
+                        <p class="text-[11px] text-gray-400">Cek status pesanan Anda</p>
+                    </div>
+                </div>
+                <button onclick="closeTrackingModal()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5" id="tracking-body">
+                <div class="text-center py-8 text-gray-400">
+                    <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin"></i>
+                    <p class="text-xs">Memuat pesanan...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="qris-payment-overlay" onclick="closeQRISPayment()"
+        class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="qris-payment-modal"
+        class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="scan-line" class="w-5 h-5 text-emerald-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">Bayar via QRIS</h3>
+                        <p class="text-[11px] text-gray-400">Scan & upload bukti pembayaran</p>
+                    </div>
+                </div>
+                <button onclick="closeQRISPayment()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div id="qris-display" class="text-center">
+                    <img id="qris-image" src="" alt="QRIS Barcode" class="w-48 h-48 mx-auto object-contain border border-gray-200 rounded-2xl p-2 mb-2">
+                    <p id="qris-name" class="text-xs font-semibold text-gray-700 mb-1"></p>
+                    <p class="text-xs text-gray-400">No. Pesanan: <strong id="qris-order-number"></strong></p>
+                    <p class="text-xs text-gray-400">Total: <strong id="qris-total"></strong></p>
+                </div>
+                <div class="border-t border-gray-200 pt-4">
+                    <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-2">Upload Bukti Bayar</label>
+                    <p class="text-[11px] text-gray-400 mb-3">Setelah transfer, upload screenshot bukti pembayaran di sini.</p>
+                    <div class="flex items-center gap-2">
+                        <input type="file" id="proof-upload-input" accept="image/*" capture="environment"
+                            class="block w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-burgundy file:text-white hover:file:bg-opacity-90 cursor-pointer">
+                    </div>
+                    <div id="proof-preview" class="hidden mt-3">
+                        <img id="proof-preview-img" src="" alt="Preview" class="w-32 h-32 object-cover rounded-xl border border-gray-200">
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <a id="qris-wa-link" href="#" target="_blank"
+                        class="flex-1 bg-whatsapp text-white font-bold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        Konfirmasi via WA
+                    </a>
+                    <button id="btn-upload-proof" onclick="uploadQRISProof()" disabled
+                        class="flex-1 bg-burgundy text-white font-bold py-2.5 rounded-xl text-sm hover:bg-opacity-90 transition-all flex items-center justify-center gap-2 opacity-60 cursor-not-allowed">
+                        <i data-lucide="upload" class="w-4 h-4"></i>
+                        Upload Bukti
+                    </button>
+                </div>
+                <button onclick="closeQRISPayment()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 rounded-xl transition-all duration-300 text-sm">
+                    Nanti Saja
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="chatbot-overlay" onclick="closeChatModal()"
+        class="fixed inset-0 bg-black bg-opacity-60 z-[60] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+    </div>
+    <div id="chatbot-modal"
+        class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()"
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-burgundy rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="#DDA15E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 text-sm">Pusat Bantuan</h3>
+                        <p class="text-[11px] text-gray-400">Cek stok, harga, atau chat seller</p>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-5 space-y-3" id="chatbot-body">
+                <div id="chatbot-home">
+                    <p class="text-xs text-gray-500 leading-relaxed mb-4">Halo! Selamat datang di Kios Berkat Indah. Ada yang bisa kami bantu?</p>
+                    <button onclick="showChatStock()" class="w-full text-left bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl p-3 flex items-center gap-3 transition-colors mb-2">
+                        <div class="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+                        <div><p class="text-sm font-semibold text-gray-800">Cek Stok Produk</p><p class="text-[11px] text-gray-400">Lihat ketersediaan barang</p></div>
+                    </button>
+                    <button onclick="showChatPrice()" class="w-full text-left bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl p-3 flex items-center gap-3 transition-colors mb-2">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                        <div><p class="text-sm font-semibold text-gray-800">Cek Harga Produk</p><p class="text-[11px] text-gray-400">Lihat harga terkini</p></div>
+                    </button>
+                    <button onclick="chatWithSeller()" class="w-full text-left bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-xl p-3 flex items-center gap-3 transition-colors">
+                        <div class="w-8 h-8 bg-whatsapp rounded-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+                        <div><p class="text-sm font-semibold text-gray-800">Chat Seller via WhatsApp</p><p class="text-[11px] text-gray-400">Tanya langsung ke penjual</p></div>
+                    </button>
+                </div>
+                <div id="chatbot-search" class="hidden">
+                    <div class="flex items-center gap-2 mb-3">
+                        <button onclick="backChatHome()" class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+                        <h4 class="text-sm font-bold text-gray-700" id="chatbot-search-title">Cari Produk</h4>
+                    </div>
+                    <input type="text" id="chatbot-search-input" placeholder="Ketik nama produk..." oninput="debounceChatSearch()"
+                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all mb-3">
+                    <div id="chatbot-results" class="space-y-2 max-h-60 overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="terms-overlay" onclick="closeTerms()" class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm"></div>
+    <div id="terms-modal" class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()" class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[80vh] overflow-y-auto transform scale-95 transition-transform duration-300 p-6">
+            <h3 class="font-bold text-burgundy text-lg mb-3">Syarat & Ketentuan</h3>
+            <div class="text-xs text-gray-600 space-y-2 leading-relaxed">
+                <p>Dengan mendaftar dan menggunakan layanan Kios Berkat Indah, Anda menyetujui:</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>Data diri yang diberikan adalah benar dan dapat dipertanggungjawabkan.</li>
+                    <li>Pesanan yang dibuat akan diproses sesuai ketersediaan stok.</li>
+                    <li>Pembayaran dilakukan sesuai metode yang dipilih.</li>
+                    <li>Pengambilan barang sesuai jadwal yang ditentukan.</li>
+                    <li>Kios Berkat Indah berhak menolak atau membatalkan pesanan jika terdapat indikasi penyalahgunaan.</li>
+                </ul>
+            </div>
+            <button onclick="closeTerms()" class="mt-4 w-full bg-burgundy text-white font-bold py-2.5 rounded-xl text-sm">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Change Name Modal -->
+    <div id="changename-overlay" onclick="closeChangeName()" class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm"></div>
+    <div id="changename-modal" class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()" class="bg-white rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-transform duration-300 p-5">
+            <h3 class="font-bold text-burgundy text-sm mb-4">Ubah Nama</h3>
+            <input type="text" id="change-name-input" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy mb-3" placeholder="Nama baru">
+            <button onclick="submitChangeName()" class="w-full bg-burgundy text-white font-bold py-2.5 rounded-xl text-sm">Simpan</button>
+            <button onclick="closeChangeName()" class="w-full text-xs text-gray-400 mt-2 hover:underline">Batal</button>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changepw-overlay" onclick="closeChangePassword()" class="fixed inset-0 bg-black bg-opacity-60 z-[80] pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm"></div>
+    <div id="changepw-modal" class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()" class="bg-white rounded-3xl shadow-2xl w-full max-w-sm transform scale-95 transition-transform duration-300 p-5">
+            <h3 class="font-bold text-burgundy text-sm mb-4">Ubah Password</h3>
+            <input type="password" id="changepw-current" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy mb-3" placeholder="Password lama">
+            <input type="password" id="changepw-new" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy mb-3" placeholder="Password baru (min. 6 karakter)">
+            <p id="changepw-error" class="text-xs text-red-600 hidden mb-2"></p>
+            <button onclick="submitChangePassword()" class="w-full bg-burgundy text-white font-bold py-2.5 rounded-xl text-sm">Simpan</button>
+            <button onclick="closeChangePassword()" class="w-full text-xs text-gray-400 mt-2 hover:underline">Batal</button>
+        </div>
+    </div>
+
+    <footer class="bg-burgundy text-white border-t-2 border-gold border-opacity-40 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+
+                <div class="md:col-span-5 space-y-5">
+                    <div>
+                        <h2 class="text-xl font-bold text-gold tracking-tight">Kios Berkat Indah</h2>
+                        <p class="text-xs text-gray-300 mt-2 leading-relaxed">Menyediakan berbagai kebutuhan sembako,
+                            minuman segar, produk kelontong pilihan, rokok, hingga kopi lokal berkualitas tinggi untuk
+                            wilayah sekitar.</p>
+                    </div>
+                    <div class="space-y-3 text-xs text-gray-300 border-l-2 border-gold border-opacity-30 pl-4">
+                        <div class="flex items-start gap-2.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0 mt-0.5"></i>
+                            <span>Sebelah kanan SMPS Rewarangga, Jl. Alternatif ke Maumere</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="clock" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                            <span>Senin - Sabtu: 06.00 AM - 07.00 PM</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i>
+                            <span>+62 812-4600-5284</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:block md:col-span-1"></div>
+
+                <div class="md:col-span-6 w-full">
+                    <h3 class="text-xs font-bold text-gold uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                        <i data-lucide="map" class="w-4 h-4"></i> Lokasi Fisik Kios Resmi
+                    </h3>
+                    <div
+                        class="w-full h-48 rounded-2xl overflow-hidden shadow-lg border border-white border-opacity-10 relative bg-gray-800">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.6517656341166!2d121.67781298339116!3d-8.822934110610401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dad5fe27e734fe1%3A0xc52c9b6b3c535fee!2sKIOS%20BERKAT%20INDAH!5e0!3m2!1sen!2sid!4v1780988364730!5m2!1sen!2sid"
+                            class="absolute inset-0 w-full h-full border-0" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="border-gray-800 my-8">
+
+            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400 gap-4">
+                <p>&copy; <span id="copyright-year">2026</span> Kios Berkat Indah. All rights reserved.</p>
+                <p class="flex items-center gap-1">Web Design <a
+                        href="https://www.instagram.com/luisraja_?igsh=eXVoYnJ2am1uNXpz" target="_blank"
+                        class="text-gold font-semibold hover:text-white transition-colors">Basa Raja</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

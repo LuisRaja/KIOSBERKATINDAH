@@ -1,0 +1,13 @@
+{
+  "appId": "com.kiosberkatindah.app",
+  "appName": "Kios Berkat Indah",
+  "webDir": "public",
+  "server": {
+    "url": "http://10.0.2.2:3000",
+    "cleartext": true,
+    "allowNavigation": ["10.0.2.2", "localhost", "kiosberkatindah.com"]
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

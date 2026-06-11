@@ -1,0 +1,10 @@
+{
+  "icon": {
+    "background": "#f0e9e1",
+    "source": "logo.svg",
+    "padding": 4
+  },
+  "splash": {
+    "backgroundColor": "#f0e9e1"
+  }
+}

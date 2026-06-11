@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin Kios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class="bg-gray-50 font-[Plus_Jakarta_Sans]">
+    <%- include('partials/navbar') %>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <h1 class="text-2xl font-extrabold text-burgundy mb-6">Dashboard</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <a href="/admin/products" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-burgundy bg-opacity-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A0E17" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold text-burgundy"><%= totalProducts %></p>
+                    <p class="text-xs text-gray-500 font-semibold">Total Produk</p>
+                </div>
+            </a>
+            <a href="/admin/orders" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold text-blue-600"><%= totalOrders %></p>
+                    <p class="text-xs text-gray-500 font-semibold">Total Pesanan</p>
+                </div>
+            </a>
+            <a href="/admin/orders?status=pending" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold text-amber-600"><%= pendingOrders %></p>
+                    <p class="text-xs text-gray-500 font-semibold">Menunggu</p>
+                </div>
+            </a>
+            <a href="/admin/revenue" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold text-emerald-600">Rp <%= totalRevenue.toLocaleString('id-ID') %></p>
+                    <p class="text-xs text-gray-500 font-semibold">Pendapatan</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <a href="/admin/users" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                    <p class="text-lg font-extrabold text-purple-700">Kelola User</p>
+                    <p class="text-xs text-gray-500">Tambah, reset password, hapus user</p>
+                </div>
+            </a>
+            <a href="/admin/settings" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group">
+                <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </div>
+                <div>
+                    <p class="text-lg font-extrabold text-gray-700">Pengaturan</p>
+                    <p class="text-xs text-gray-500">Toko, QRIS, tutup toko, pengumuman</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <a href="/admin/orders?status=pending" class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-4 group relative">
+                <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold text-red-600"><%= pendingOrders %></p>
+                    <p class="text-xs text-gray-500 font-semibold">Pesanan Baru Belum Dicek</p>
+                </div>
+                <% if (pendingOrders > 0) { %>
+                    <span class="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
+                <% } %>
+            </a>
+            <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 <%= storeClosed === '1' ? 'bg-red-100' : 'bg-emerald-100' %> rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="<%= storeClosed === '1' ? '#dc2626' : '#059669' %>" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-lg font-extrabold <%= storeClosed === '1' ? 'text-red-600' : 'text-emerald-600' %>">
+                                <%= storeClosed === '1' ? 'Toko Tutup' : 'Toko Buka' %>
+                            </p>
+                            <p class="text-xs text-gray-500">Status toko saat ini</p>
+                        </div>
+                    </div>
+                    <a href="/admin/settings" class="text-xs font-semibold text-burgundy hover:underline">Ubah</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Pesanan Terbaru
+        </h2>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                    <tr>
+                        <th class="text-left p-4">Order</th>
+                        <th class="text-left p-4">Pelanggan</th>
+                        <th class="text-left p-4">Total</th>
+                        <th class="text-left p-4">Status</th>
+                        <th class="text-left p-4">Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (recentOrders.length === 0) { %>
+                        <tr><td colspan="5" class="p-8 text-center text-gray-400">Belum ada pesanan</td></tr>
+                    <% } %>
+                    <% recentOrders.forEach(order => { %>
+                        <tr class="border-t border-gray-100">
+                            <td class="p-4 font-semibold text-gray-800"><%= order.order_number %></td>
+                            <td class="p-4 text-gray-600"><%= order.customer_name %></td>
+                            <td class="p-4 font-semibold text-burgundy">Rp <%= order.total.toLocaleString('id-ID') %></td>
+                            <td class="p-4"><span class="text-xs font-bold px-2.5 py-1 rounded-full
+                                <%= order.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                                   order.status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
+                                   order.status === 'processing' ? 'bg-purple-100 text-purple-700' :
+                                   order.status === 'ready' ? 'bg-emerald-100 text-emerald-700' :
+                                   'bg-green-100 text-green-700' %>">
+                                <%= order.status.toUpperCase() %>
+                            </span></td>
+                            <td class="p-4 text-gray-400 text-xs"><%= new Date(order.created_at).toLocaleDateString('id-ID') %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>lucide.createIcons()</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produk - Admin Kios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class="bg-gray-50 font-[Plus_Jakarta_Sans]">
+    <%- include('partials/navbar') %>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-extrabold text-burgundy">Kelola Produk</h1>
+            <button onclick="openModal()" class="bg-burgundy text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-opacity-90 transition-all flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-4 h-4"></i> Tambah Produk
+            </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                    <tr>
+                        <th class="text-left p-4">Kode</th>
+                        <th class="text-left p-4">Nama</th>
+                        <th class="text-left p-4">Kategori</th>
+                        <th class="text-right p-4">Harga</th>
+                        <th class="text-right p-4">Stok</th>
+                        <th class="text-center p-4">Aktif</th>
+                        <th class="text-center p-4">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(p => { %>
+                        <tr class="border-t border-gray-100 hover:bg-gray-50">
+                            <td class="p-4 font-mono text-xs font-bold text-gray-600"><%= p.code %></td>
+                            <td class="p-4 font-semibold text-gray-800"><%= p.name %></td>
+                            <td class="p-4 text-xs text-gray-500"><%= p.category_name %></td>
+                            <td class="p-4 text-right font-semibold text-burgundy">Rp <%= p.price.toLocaleString('id-ID') %></td>
+                            <td class="p-4 text-right <%= p.stock <= 5 ? 'text-red-600 font-bold' : 'text-gray-600' %>"><%= p.stock %></td>
+                            <td class="p-4 text-center">
+                                <span class="<%= p.is_active ? 'text-emerald-500' : 'text-red-400' %>"><%= p.is_active ? 'Aktif' : 'Nonaktif' %></span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <button onclick="editProduct(<%= p.id %>)" class="text-blue-600 hover:text-blue-800 text-xs font-semibold mr-2">Edit</button>
+                                <button onclick="deleteProduct(<%= p.id %>)" class="text-red-600 hover:text-red-800 text-xs font-semibold">Hapus</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="productModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-bold text-gray-800" id="modalTitle">Tambah Produk</h2>
+                <button onclick="closeModal()" class="p-1 hover:bg-gray-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="productForm" class="space-y-3" enctype="multipart/form-data">
+                <input type="hidden" name="_method" id="formMethod" value="POST">
+                <input type="hidden" name="editId" id="editId">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Kode Produk</label>
+                        <input type="text" name="code" id="prodCode" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Kategori</label>
+                        <select name="category_id" id="prodCategory" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                            <% categories.forEach(c => { %>
+                                <option value="<%= c.id %>"><%= c.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nama Produk</label>
+                    <input type="text" name="name" id="prodName" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Harga Jual (Rp)</label>
+                        <input type="number" name="price" id="prodPrice" required min="0" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Harga Modal (Rp)</label>
+                        <input type="number" name="cost_price" id="prodCostPrice" min="0" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy" placeholder="0">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Stok</label>
+                        <input type="number" name="stock" id="prodStock" required min="0" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Deskripsi</label>
+                    <textarea name="description" id="prodDesc" rows="2" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Gambar</label>
+                    <input type="file" name="image" accept="image/*" class="w-full text-sm">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl text-sm">Batal</button>
+                    <button type="submit" class="flex-1 bg-burgundy text-white font-bold py-2.5 rounded-xl text-sm hover:bg-opacity-90">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const productData = <%- JSON.stringify(products) %>;
+
+        lucide.createIcons();
+
+        function openModal(product = null) {
+            document.getElementById('productModal').classList.remove('hidden');
+            document.getElementById('modalTitle').textContent = product ? 'Edit Produk' : 'Tambah Produk';
+            document.getElementById('prodCode').value = product ? product.code : '';
+            document.getElementById('prodCode').disabled = !!product;
+            document.getElementById('prodName').value = product ? product.name : '';
+            document.getElementById('prodCategory').value = product ? product.category_id : '';
+            document.getElementById('prodPrice').value = product ? product.price : '';
+            document.getElementById('prodCostPrice').value = product ? (product.cost_price || 0) : '';
+            document.getElementById('prodStock').value = product ? product.stock : '';
+            document.getElementById('prodDesc').value = product ? (product.description || '') : '';
+            document.getElementById('editId').value = product ? product.id : '';
+            document.getElementById('formMethod').value = product ? 'PUT' : 'POST';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function editProduct(id) {
+            const product = productData.find(p => p.id === id);
+            openModal(product);
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Hapus produk ini?')) return;
+            const res = await fetch('/admin/products/' + id, { method: 'DELETE' });
+            const data = await res.json();
+            if (data.success) location.reload();
+            else alert('Gagal: ' + data.error);
+        }
+
+        document.getElementById('productForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const method = document.getElementById('formMethod').value;
+            const editId = document.getElementById('editId').value;
+            const url = editId ? '/admin/products/' + editId : '/admin/products';
+            const res = await fetch(url, { method: method === 'PUT' ? 'PUT' : 'POST', body: formData });
+            const data = await res.json();
+            if (data.success) location.reload();
+            else alert('Gagal: ' + (data.error || 'Unknown error'));
+        };
+    </script>
+</body>
+</html>

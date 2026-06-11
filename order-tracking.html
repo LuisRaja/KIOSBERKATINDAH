@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Pesanan - Kios Berkat Indah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-[Plus_Jakarta_Sans]">
+    <div id="app" class="max-w-lg mx-auto px-4 py-8">
+        <div id="loading" class="text-center py-20">
+            <div class="animate-spin w-8 h-8 border-2 border-burgundy border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p class="text-sm text-gray-500">Memuat status pesanan...</p>
+        </div>
+        <div id="error" class="hidden text-center py-20">
+            <p class="text-red-600 font-semibold">Pesanan tidak ditemukan</p>
+            <a href="/" class="text-burgundy text-sm mt-2 inline-block hover:underline">Kembali ke katalog</a>
+        </div>
+        <div id="order-detail" class="hidden"></div>
+    </div>
+    <script>
+        const orderNumber = window.location.pathname.split('/').pop();
+        fetch('/api/orders/' + orderNumber)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('loading').classList.add('hidden');
+                if (!data.success) {
+                    document.getElementById('error').classList.remove('hidden');
+                    return;
+                }
+                const o = data.data;
+
+                const stages = [
+                    { key: 'ordered', label: 'Diorder', icon: 'clipboard-list' },
+                    { key: 'packed', label: 'Dikemas', icon: 'package' },
+                    { key: 'ready', label: 'Siap Diambil', icon: 'shopping-bag' }
+                ];
+
+                let currentStep = 0;
+                let statusLabel = 'Menunggu Konfirmasi';
+                let statusColor = 'bg-amber-500';
+
+                switch (o.status) {
+                    case 'pending':
+                        currentStep = 1;
+                        statusLabel = 'Pesanan Diterima';
+                        statusColor = 'bg-amber-500';
+                        break;
+                    case 'confirmed':
+                    case 'processing':
+                        currentStep = 2;
+                        statusLabel = o.status === 'confirmed' ? 'Dikonfirmasi' : 'Sedang Dikemas';
+                        statusColor = 'bg-blue-500';
+                        break;
+                    case 'ready':
+                        currentStep = 3;
+                        statusLabel = 'Siap Diambil';
+                        statusColor = 'bg-emerald-500';
+                        break;
+                    case 'completed':
+                        currentStep = 3;
+                        statusLabel = 'Selesai';
+                        statusColor = 'bg-green-600';
+                        break;
+                    case 'cancelled':
+                        currentStep = 0;
+                        statusLabel = 'Dibatalkan';
+                        statusColor = 'bg-red-500';
+                        break;
+                }
+
+                const isComplete = o.status === 'completed';
+
+                document.getElementById('order-detail').classList.remove('hidden');
+                document.getElementById('order-detail').innerHTML = `
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="bg-burgundy text-white p-6">
+                            <p class="text-xs text-gold uppercase tracking-wider font-semibold">Status Pesanan</p>
+                            <h1 class="text-xl font-extrabold mt-1">${o.order_number}</h1>
+                            <span class="inline-block mt-2 text-xs font-bold px-3 py-1 rounded-full ${statusColor} bg-opacity-20 text-white">${statusLabel}</span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            ${o.status !== 'cancelled' ? `
+                            <div class="relative px-2 py-4">
+                                <div class="flex items-center">
+                                    ${stages.map((s, i) => {
+                                        const isActive = i + 1 <= currentStep;
+                                        const isLast = i === stages.length - 1;
+                                        return `
+                                        <div class="flex items-center ${isLast ? '' : 'flex-1'}">
+                                            <div class="flex flex-col items-center">
+                                                <div class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
+                                                    ${isComplete && isActive ? 'bg-green-600' : isActive ? 'bg-burgundy' : 'bg-gray-200 border-2 border-gray-300'}">
+                                                    ${isComplete && isActive
+                                                        ? `<i data-lucide="check" class="w-5 h-5 text-white"></i>`
+                                                        : isActive
+                                                            ? `<i data-lucide="${s.icon}" class="w-5 h-5 text-white"></i>`
+                                                            : `<i data-lucide="${s.icon}" class="w-5 h-5 text-gray-400"></i>`
+                                                    }
+                                                </div>
+                                                <span class="text-[10px] mt-1.5 font-bold text-center leading-tight
+                                                    ${isActive ? 'text-burgundy' : 'text-gray-400'}">
+                                                    ${s.label}
+                                                </span>
+                                                ${isLast && isComplete ? '<span class="text-[9px] text-green-600 font-bold mt-0.5">Selesai</span>' : ''}
+                                            </div>
+                                            ${!isLast ? `
+                                            <div class="flex-1 h-0.5 mx-2 mb-5
+                                                ${i + 1 < currentStep ? 'bg-burgundy' : 'bg-gray-200'}">
+                                            </div>` : ''}
+                                        </div>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                            ` : `
+                            <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+                                <i data-lucide="x-circle" class="w-8 h-8 text-red-400 mx-auto mb-2"></i>
+                                <p class="text-sm font-bold text-red-600">Pesanan Dibatalkan</p>
+                            </div>
+                            `}
+                            <div class="border-t border-gray-100 pt-4 space-y-2 text-sm">
+                                <div class="flex justify-between"><span class="text-gray-400">Pelanggan</span><span class="font-semibold text-gray-800">${o.customer_name}</span></div>
+                                <div class="flex justify-between"><span class="text-gray-400">Ambil</span><span class="font-semibold text-gray-800">${o.pickup_date} ${o.pickup_time}</span></div>
+                                <div class="flex justify-between"><span class="text-gray-400">Metode</span><span class="font-semibold text-gray-800">${o.shipping_method}</span></div>
+                                <div class="flex justify-between"><span class="text-gray-400">Pembayaran</span>
+                                    <span class="font-semibold ${o.payment_status === 'paid' ? 'text-emerald-600' : o.payment_status === 'failed' ? 'text-red-600' : 'text-amber-600'}">
+                                        ${o.payment_status === 'paid' ? 'Lunas' : o.payment_status === 'pending' ? 'Menunggu' : o.payment_status === 'failed' ? 'Gagal' : 'Belum Bayar'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Items</p>
+                                ${(o.items || []).map(item => `
+                                    <div class="flex justify-between text-sm py-1">
+                                        <span class="text-gray-700">${item.product_name} <span class="text-gray-400">x${item.quantity}</span></span>
+                                        <span class="font-semibold text-gray-800">Rp ${item.subtotal.toLocaleString('id-ID')}</span>
+                                    </div>
+                                `).join('')}
+                                <div class="border-t border-gray-100 mt-2 pt-2 flex justify-between font-bold text-burgundy text-lg">
+                                    <span>Total</span>
+                                    <span>Rp ${o.total.toLocaleString('id-ID')}</span>
+                                </div>
+                            </div>
+                            <a href="/" class="block text-center bg-burgundy text-white font-bold py-3 rounded-xl text-sm hover:bg-opacity-90 transition-all mt-4">Kembali ke Katalog</a>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+            })
+            .catch(() => {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error').classList.remove('hidden');
+            });
+    </script>
+
+</body>
+</html>

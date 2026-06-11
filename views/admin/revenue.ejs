@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendapatan - Kios Berkat Indah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#FAF9F7] min-h-screen">
+    <%- include('partials/navbar') %>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-xl font-extrabold text-burgundy flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Pendapatan
+            </h1>
+            <div class="flex items-center gap-2">
+                <a href="/admin/revenue?filter=today" class="px-3 py-1.5 rounded-lg text-xs font-semibold <%= filter === 'today' ? 'bg-burgundy text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' %>">Hari Ini</a>
+                <a href="/admin/revenue?filter=month" class="px-3 py-1.5 rounded-lg text-xs font-semibold <%= filter === 'month' ? 'bg-burgundy text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' %>">Bulan Ini</a>
+                <a href="/admin/revenue?filter=all" class="px-3 py-1.5 rounded-lg text-xs font-semibold <%= filter === 'all' ? 'bg-burgundy text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50' %>">Semua</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Pendapatan</p>
+                <p class="text-2xl font-extrabold text-burgundy">Rp <%= Number(revenue).toLocaleString('id-ID') %></p>
+                <p class="text-[11px] text-gray-400 mt-1"><%= totalOrders %> pesanan selesai</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Modal</p>
+                <p class="text-2xl font-extrabold text-red-600">Rp <%= Number(cost).toLocaleString('id-ID') %></p>
+                <p class="text-[11px] text-gray-400 mt-1">Produk dengan modal 0 tidak dihitung</p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-1">Keuntungan</p>
+                <p class="text-2xl font-extrabold <%= profit >= 0 ? 'text-emerald-600' : 'text-red-600' %>">Rp <%= Number(profit).toLocaleString('id-ID') %></p>
+                <p class="text-[11px] text-gray-400 mt-1">Pendapatan - Modal</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <h2 class="font-bold text-gray-800 text-sm">Riwayat Pendapatan (30 hari terakhir)</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="bg-gray-50 text-gray-500 font-semibold uppercase tracking-wider">
+                            <th class="text-left p-4">Tanggal</th>
+                            <th class="text-right p-4">Pesanan</th>
+                            <th class="text-right p-4">Pendapatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (dailyStats.length === 0) { %>
+                            <tr><td colspan="3" class="text-center p-8 text-gray-400">Belum ada data pendapatan</td></tr>
+                        <% } else { %>
+                            <% dailyStats.forEach(d => { %>
+                                <tr class="border-t border-gray-100 hover:bg-gray-50">
+                                    <td class="p-4 font-semibold text-gray-700"><%= d.date %></td>
+                                    <td class="p-4 text-right text-gray-600"><%= d.orders %></td>
+                                    <td class="p-4 text-right font-semibold text-burgundy">Rp <%= Number(d.revenue).toLocaleString('id-ID') %></td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <h2 class="font-bold text-gray-800 text-sm mb-3">Reset Pendapatan</h2>
+            <p class="text-xs text-gray-400 mb-3">Hapus semua pesanan yang sudah selesai (status completed + paid). Data tidak bisa dikembalikan.</p>
+            <button onclick="resetRevenue()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl text-xs transition-colors">Reset Pendapatan</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        async function resetRevenue() {
+            if (!confirm('Yakin ingin menghapus semua data pesanan selesai? Pendapatan akan di-reset ke 0. Data tidak bisa dikembalikan!')) return;
+            const res = await fetch('/admin/api/revenue/reset', { method: 'POST' });
+            const data = await res.json();
+            alert(data.message);
+            if (data.success) location.reload();
+        }
+    </script>
+</body>
+</html>

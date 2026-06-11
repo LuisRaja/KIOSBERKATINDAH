@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User - Admin Kios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/tailwind.css">
+</head>
+<body class="bg-gray-50 font-[Plus_Jakarta_Sans]">
+    <%- include('partials/navbar') %>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-extrabold text-burgundy">Kelola User</h1>
+        </div>
+
+        <% if (message) { %>
+            <div class="mb-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700"><%= error %></div>
+        <% } %>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+            <div class="p-4 border-b border-gray-100">
+                <h2 class="font-bold text-gray-800">Tambah User Baru</h2>
+            </div>
+            <form method="POST" action="/admin/users/create" class="p-4 grid grid-cols-1 md:grid-cols-5 gap-3">
+                <input type="text" name="name" placeholder="Nama *" required class="px-4 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                <input type="email" name="email" placeholder="Email" class="px-4 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                <input type="tel" name="phone" placeholder="Nomor Telepon" class="px-4 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                <input type="password" name="password" placeholder="Password *" required minlength="6" class="px-4 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                <button type="submit" class="bg-burgundy text-white font-bold py-2 rounded-xl text-sm hover:bg-opacity-90 transition-all">Tambah User</button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                    <tr>
+                        <th class="text-left p-4">Nama</th>
+                        <th class="text-left p-4">Email</th>
+                        <th class="text-left p-4">Telepon</th>
+                        <th class="text-left p-4">Google ID</th>
+                        <th class="text-left p-4">Daftar</th>
+                        <th class="text-left p-4">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (users.length === 0) { %>
+                        <tr><td colspan="6" class="p-8 text-center text-gray-400">Belum ada user</td></tr>
+                    <% } %>
+                    <% users.forEach(u => { %>
+                        <tr class="border-t border-gray-100">
+                            <td class="p-4 font-semibold text-gray-800"><%= u.name || '-' %></td>
+                            <td class="p-4 text-gray-600"><%= u.email || '-' %></td>
+                            <td class="p-4 text-gray-600"><%= u.phone || '-' %></td>
+                            <td class="p-4 text-gray-400"><%= u.google_id ? 'Ya' : '-' %></td>
+                            <td class="p-4 text-gray-400 text-xs"><%= new Date(u.created_at).toLocaleDateString('id-ID') %></td>
+                            <td class="p-4">
+                                <form method="POST" action="/admin/users/reset-password" class="inline-flex gap-1">
+                                    <input type="hidden" name="user_id" value="<%= u.id %>">
+                                    <input type="password" name="new_password" placeholder="Pass baru" required minlength="6" class="w-28 px-2 py-1 border border-gray-200 rounded-lg text-xs outline-none focus:ring-1 focus:ring-burgundy">
+                                    <button type="submit" class="bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-lg hover:bg-amber-700 transition-all">Reset</button>
+                                </form>
+                                <form method="POST" action="/admin/users/delete" class="inline-flex ml-1" onsubmit="return confirm('Hapus user ini?')">
+                                    <input type="hidden" name="user_id" value="<%= u.id %>">
+                                    <button type="submit" class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-lg hover:bg-red-700 transition-all">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-8 bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <h2 class="text-lg font-extrabold text-burgundy mb-4">Bersihkan Pesanan Lama</h2>
+            <form id="cleanup-form" class="flex items-center gap-3">
+                <label class="text-sm text-gray-600">Hapus pesanan dengan status selesai yang lebih dari</label>
+                <input type="number" name="days" value="30" min="1" class="w-20 px-3 py-2 border border-gray-200 rounded-xl text-sm outline-none focus:ring-1 focus:ring-burgundy">
+                <span class="text-sm text-gray-600">hari</span>
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-xl text-sm transition-all" onclick="return confirm('Yakin hapus pesanan lama?')">Hapus</button>
+            </form>
+            <div id="cleanup-result" class="mt-3 text-sm hidden"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('cleanup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const days = e.target.days.value;
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.textContent = 'Memproses...';
+            btn.disabled = true;
+            try {
+                const res = await fetch('/admin/orders/cleanup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ days: parseInt(days) })
+                });
+                const data = await res.json();
+                const el = document.getElementById('cleanup-result');
+                el.className = 'mt-3 text-sm ' + (data.success ? 'text-emerald-600' : 'text-red-600');
+                el.textContent = data.message || data.error || 'Selesai';
+                el.classList.remove('hidden');
+            } catch (e) {
+                const el = document.getElementById('cleanup-result');
+                el.className = 'mt-3 text-sm text-red-600';
+                el.textContent = 'Gagal menghubungi server';
+                el.classList.remove('hidden');
+            }
+            btn.textContent = 'Hapus';
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>
