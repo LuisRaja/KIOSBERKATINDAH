@@ -5,6 +5,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { getDb } = require('../db/schema');
 
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -31,6 +32,7 @@ passport.use(new GoogleStrategy({
     }
     return done(null, user);
 }));
+}
 
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => {
@@ -99,6 +101,7 @@ router.post('/logout', (req, res) => {
     });
 });
 
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 router.get('/google',
     passport.authenticate('google', { scope: ['profile', 'email'], session: false })
 );
@@ -110,6 +113,7 @@ router.get('/google/callback',
         res.redirect(process.env.APP_URL || '/');
     }
 );
+}
 
 router.get('/profile', isAuthenticated, (req, res) => {
     const db = getDb();
