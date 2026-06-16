@@ -3,7 +3,17 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const rateLimit = require('express-rate-limit');
+const { body, validationResult } = require('express-validator');
 const { getDb } = require('../db/schema');
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { success: false, error: 'Terlalu banyak percobaan login, coba lagi 15 menit' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 passport.use(new GoogleStrategy({
@@ -45,20 +55,23 @@ function isAuthenticated(req, res, next) {
     res.status(401).json({ success: false, error: 'Belum login' });
 }
 
-router.post('/register', (req, res) => {
+router.post('/register', authLimiter, [
+    body('name').trim().notEmpty().withMessage('Nama wajib diisi').isLength({ max: 100 }),
+    body('email').optional({ values: 'falsy' }).isEmail().normalizeEmail(),
+    body('phone').optional({ values: 'falsy' }).matches(/^08\d{8,11}$/).withMessage('Nomor telepon tidak valid (harus 08xx, min. 10 digit)'),
+    body('password').isLength({ min: 6 }).withMessage('Password minimal 6 karakter'),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, error: errors.array()[0].msg });
+    }
     const { email, password, name, phone } = req.body;
     const db = getDb();
-    if (!password || !name) {
-        return res.status(400).json({ success: false, error: 'Nama, dan password wajib diisi' });
-    }
     if (email) {
         const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
         if (existing) return res.status(400).json({ success: false, error: 'Email sudah terdaftar' });
     }
     if (phone) {
-        if (!/^08\d{8,11}$/.test(phone.replace(/\D/g, ''))) {
-            return res.status(400).json({ success: false, error: 'Nomor telepon tidak valid (harus 08xx, min. 10 digit)' });
-        }
         const existing = db.prepare('SELECT id FROM users WHERE phone = ?').get(phone);
         if (existing) return res.status(400).json({ success: false, error: 'Nomor telepon sudah terdaftar' });
     }
@@ -72,10 +85,16 @@ router.post('/register', (req, res) => {
     res.json({ success: true, data: user, message: 'Registrasi berhasil' });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', authLimiter, [
+    body('password').notEmpty().withMessage('Password wajib diisi'),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, error: errors.array()[0].msg });
+    }
     const { email, phone, password } = req.body;
-    if ((!email && !phone) || !password) {
-        return res.status(400).json({ success: false, error: 'Email/nomor telepon dan password wajib diisi' });
+    if (!email && !phone) {
+        return res.status(400).json({ success: false, error: 'Email/nomor telepon wajib diisi' });
     }
     const db = getDb();
     let user;
@@ -95,10 +114,37 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.post('/admin-login', (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).json({ success: false, error: 'Username dan password wajib diisi' });
+    }
+    const db = getDb();
+    const admin = db.prepare('SELECT * FROM admins WHERE username = ?').get(username);
+    if (!admin || !bcrypt.compareSync(password, admin.password)) {
+        return res.status(401).json({ success: false, error: 'Username atau password salah' });
+    }
+    const jwt = require('jsonwebtoken');
+    const token = jwt.sign({ id: admin.id, username: admin.username }, process.env.SESSION_SECRET || 'kios-rahasia-berkat-indah-2026', { expiresIn: '8h' });
+    req.session.adminToken = token;
+    res.json({ success: true, message: 'Login admin berhasil', data: { username: admin.username } });
+});
+
 router.post('/logout', (req, res) => {
     req.session.destroy(() => {
         res.json({ success: true, message: 'Logout berhasil' });
     });
+});
+
+router.get('/session', (req, res) => {
+    const result = { buyer: false, admin: false };
+    if (req.session && req.session.userId) {
+        result.buyer = true;
+    }
+    if (req.session && req.session.adminToken) {
+        result.admin = true;
+    }
+    res.json({ success: true, data: result });
 });
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
@@ -106,14 +152,34 @@ router.get('/google',
     passport.authenticate('google', { scope: ['profile', 'email'], session: false })
 );
 
-router.get('/google/callback',
-    passport.authenticate('google', { session: false, failureRedirect: '/' }),
-    (req, res) => {
-        req.session.userId = req.user.id;
-        res.redirect(process.env.APP_URL || '/');
-    }
-);
+router.get('/google/callback', (req, res, next) => {
+    passport.authenticate('google', { session: false, failureRedirect: '/?error=login_gagal' }, (err, user, info) => {
+        if (err) {
+            console.error('Google OAuth error:', err.message);
+            return res.redirect('/?error=login_gagal');
+        }
+        if (!user) {
+            return res.redirect('/?error=login_gagal');
+        }
+        req.session.userId = user.id;
+        const redirectUrl = process.env.APP_URL || (process.env.RAILWAY_PUBLIC_DOMAIN ? 'https://' + process.env.RAILWAY_PUBLIC_DOMAIN : '/');
+        res.redirect(redirectUrl);
+    })(req, res, next);
+});
 }
+
+router.get('/admin-profile', (req, res) => {
+    if (!req.session || !req.session.adminToken) {
+        return res.status(401).json({ success: false, error: 'Belum login sebagai admin' });
+    }
+    try {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(req.session.adminToken, process.env.SESSION_SECRET || 'kios-rahasia-berkat-indah-2026');
+        return res.json({ success: true, data: { id: decoded.id, username: decoded.username } });
+    } catch {
+        return res.status(401).json({ success: false, error: 'Session admin tidak valid' });
+    }
+});
 
 router.get('/profile', isAuthenticated, (req, res) => {
     const db = getDb();

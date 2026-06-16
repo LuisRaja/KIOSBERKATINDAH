@@ -4,11 +4,15 @@ const express = require('express');
 const session = require('express-session');
 const helmet = require('helmet');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const isProduction = !!(process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production');
+app.set('trust proxy', isProduction ? 1 : 0);
 
 const uploadsDir = path.resolve(__dirname, 'public', 'uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -31,14 +35,36 @@ app.use(helmet({
     },
     crossOriginEmbedderPolicy: false
 }));
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(cors({
+    origin: isProduction
+        ? ['https://kiosberkatindah-production.up.railway.app']
+        : ['http://localhost:3000', 'http://localhost:5173'],
+    credentials: true
+}));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    message: { error: 'Terlalu banyak permintaan, coba lagi nanti' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use('/api/', generalLimiter);
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'kios-rahasia-berkat-indah-2026',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 8 * 60 * 60 * 1000 }
+    cookie: {
+        secure: isProduction,
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 8 * 60 * 60 * 1000
+    }
 }));
 app.use(require('passport').initialize());
 app.use(require('passport').session());

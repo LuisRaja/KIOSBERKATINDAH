@@ -4,7 +4,7 @@
   "description": "Belanja sembako dan kebutuhan harian dari Kios Berkat Indah",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f0e9e1",
+  "background_color": "'#f0e9e1'",
   "theme_color": "#4A0E17",
   "orientation": "portrait",
   "icons": [

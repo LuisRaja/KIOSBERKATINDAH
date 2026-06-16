@@ -1,7 +1,7 @@
 {
   "icon": {
     "background": "#f0e9e1",
-    "source": "logo.svg",
+    "source": "logo-app.png",
     "padding": 4
   },
   "splash": {
