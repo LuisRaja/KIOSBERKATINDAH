@@ -6,6 +6,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const rateLimit = require('express-rate-limit');
 const { body, validationResult } = require('express-validator');
 const { getDb } = require('../db/schema');
+const { generateToken } = require('../middleware/auth');
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -162,6 +163,12 @@ router.get('/google/callback', (req, res, next) => {
             return res.redirect('/?error=login_gagal');
         }
         req.session.userId = user.id;
+        const adminEmail = process.env.ADMIN_GOOGLE_EMAIL || 'louyzhradja86@gmail.com';
+        if (user.email === adminEmail) {
+            const token = generateToken({ id: user.id, username: user.email });
+            req.session.adminToken = token;
+            return res.redirect('/admin');
+        }
         const redirectUrl = process.env.APP_URL || (process.env.RAILWAY_PUBLIC_DOMAIN ? 'https://' + process.env.RAILWAY_PUBLIC_DOMAIN : '/');
         res.redirect(redirectUrl);
     })(req, res, next);
