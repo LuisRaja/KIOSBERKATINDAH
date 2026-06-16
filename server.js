@@ -38,8 +38,8 @@ app.use(helmet({
 
 app.use(cors({
     origin: isProduction
-        ? ['https://kiosberkatindah-production.up.railway.app']
-        : ['http://localhost:3000', 'http://localhost:5173'],
+        ? ['https://kiosberkatindah-production.up.railway.app', 'https://luisraja.github.io']
+        : ['http://localhost:3000', 'http://localhost:5173', 'https://luisraja.github.io'],
     credentials: true
 }));
 

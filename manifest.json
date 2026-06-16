@@ -1,0 +1,54 @@
+{
+  "name": "Kios Berkat Indah",
+  "short_name": "Kios BI",
+  "description": "Belanja sembako dan kebutuhan harian dari Kios Berkat Indah",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "'#f0e9e1'",
+  "theme_color": "#4A0E17",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "48x48",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "72x72",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "96x96",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "128x128",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "256x256",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo-app.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
