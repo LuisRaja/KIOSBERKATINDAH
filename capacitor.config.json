@@ -2,11 +2,6 @@
   "appId": "com.kiosberkatindah.app",
   "appName": "Kios Berkat Indah",
   "webDir": "public",
-  "server": {
-    "url": "https://kiosberkatindah-production.up.railway.app",
-    "cleartext": true,
-    "allowNavigation": ["kiosberkatindah-production.up.railway.app", "10.0.2.2", "localhost"]
-  },
   "android": {
     "allowMixedContent": true
   }
