@@ -328,18 +328,24 @@ async function submitOrder() {
         alert('Pilih metode pembayaran terlebih dahulu');
         return;
     }
-    if (!currentUser) {
-        window.pendingSubmitAfterLogin = true;
-        openAuthModal();
-        return;
-    }
     const customerName = document.getElementById('customer-name').value.trim();
     const customerPhone = document.getElementById('customer-phone').value.trim();
     const pickupDate = document.getElementById('pickup-date').value;
     const pickupTime = document.getElementById('pickup-time').value;
     const notes = document.getElementById('order-notes')?.value.trim() || '';
-    const cartItemIds = Object.keys(shoppingCart);
 
+    if (!currentUser) {
+        window.pendingSubmitAfterLogin = true;
+        window.pendingOrderData = { customerName, customerPhone, pickupDate, pickupTime, notes };
+        openAuthModal();
+        return;
+    }
+
+    await placeOrder(customerName, customerPhone, pickupDate, pickupTime, notes);
+}
+
+async function placeOrder(customerName, customerPhone, pickupDate, pickupTime, notes) {
+    const cartItemIds = Object.keys(shoppingCart);
     const items = cartItemIds.map(id => {
         const product = globalProducts.find(p => p.id == id);
         return { productId: parseInt(id), quantity: shoppingCart[id], name: product.nama, price: product.harga };
@@ -1426,8 +1432,10 @@ async function submitBuyerLogin() {
             updateUserMenu();
             closeAuthModal();
             if (window.pendingSubmitAfterLogin) {
+                const d = window.pendingOrderData;
                 window.pendingSubmitAfterLogin = false;
-                setTimeout(submitOrder, 300);
+                window.pendingOrderData = null;
+                setTimeout(() => placeOrder(d.customerName, d.customerPhone, d.pickupDate, d.pickupTime, d.notes), 300);
             }
         } else {
             errorEl.textContent = res.error || 'Login gagal';
@@ -1505,8 +1513,10 @@ async function submitRegister() {
             updateUserMenu();
             closeAuthModal();
             if (window.pendingSubmitAfterLogin) {
+                const d = window.pendingOrderData;
                 window.pendingSubmitAfterLogin = false;
-                setTimeout(submitOrder, 300);
+                window.pendingOrderData = null;
+                setTimeout(() => placeOrder(d.customerName, d.customerPhone, d.pickupDate, d.pickupTime, d.notes), 300);
             }
         } else {
             errorEl.textContent = res.error || 'Daftar gagal';
