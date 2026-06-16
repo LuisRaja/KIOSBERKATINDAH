@@ -104,7 +104,6 @@ function setupBackButton() {
                 { overlay: 'changename-overlay', close: 'closeChangeName' },
                 { overlay: 'changepw-overlay', close: 'closeChangePassword' },
                 { overlay: 'maps-overlay', close: 'closeMapsModal' },
-                { id: 'hamburger-dropdown', close: 'toggleHamburgerMenu' },
             ];
             for (var i = 0; i < modals.length; i++) {
                 var m = modals[i];
@@ -695,6 +694,7 @@ function activateShoppingMenu() {
     if (chatBtn) chatBtn.style.display = 'none';
     var cartHeader = document.getElementById('btn-cart-header');
     if (cartHeader) cartHeader.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function initializeDropdownCategories() {
@@ -1093,11 +1093,6 @@ function toggleFooterMap() {
     }
 }
 
-function toggleHamburgerMenu() {
-    var dropdown = document.getElementById('hamburger-dropdown');
-    dropdown.classList.toggle('hidden');
-}
-
 function openMapsModal() {
     const overlay = document.getElementById('maps-overlay');
     const modal = document.getElementById('maps-modal');
@@ -1121,33 +1116,6 @@ function closeMapsModal() {
     modal.classList.replace('opacity-100', 'opacity-0');
     content.classList.replace('translate-y-0', 'translate-y-full');
     content.classList.replace('sm:scale-100', 'sm:scale-95');
-}
-
-function openUserMenuMobile() {
-    if (!currentUser) {
-        openAuthModal();
-        return;
-    }
-    var dropdown = document.getElementById('user-dropdown');
-    var overlay = document.getElementById('user-overlay');
-    var loggedIn = document.getElementById('dropdown-logged-in');
-    if (dropdown.classList.contains('hidden')) {
-        loggedIn.classList.remove('hidden');
-        document.getElementById('dropdown-user-name').textContent = currentUser.name;
-        document.getElementById('dropdown-user-email').textContent = currentUser.email || currentUser.phone || '';
-        dropdown.classList.remove('hidden');
-        if (!overlay) {
-            var o = document.createElement('div');
-            o.id = 'user-overlay';
-            o.className = 'fixed inset-0 z-30 bg-transparent';
-            o.onclick = closeUserMenu;
-            document.body.appendChild(o);
-        } else {
-            overlay.classList.remove('hidden');
-        }
-    } else {
-        closeUserMenu();
-    }
 }
 
 function openBurgerMenu() {

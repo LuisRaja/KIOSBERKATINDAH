@@ -115,7 +115,7 @@
 
         <div id="landing-menu-container"
             class="flex flex-col items-center justify-center py-12 lg:py-20 bg-white rounded-3xl lg:rounded-[2rem] border border-gray-100 shadow-sm p-8 lg:p-12 transition-all">
-            <i data-lucide="shopping-cart" class="w-16 h-16 lg:w-20 lg:h-20 text-gold mb-4 lg:mb-6"></i>
+            <img src="logo.svg" alt="Kios Berkat Indah" class="w-16 h-16 lg:w-20 lg:h-20 mb-4 lg:mb-6">
             <h3 class="text-xl lg:text-2xl xl:text-3xl font-bold text-burgundy mb-2 lg:mb-3">Siap Memenuhi Kebutuhan Rumah Tangga Anda?</h3>
             <p class="text-sm lg:text-base text-gray-500 text-center max-w-md lg:max-w-lg mb-6 lg:mb-8">Silakan klik tombol di bawah ini untuk membuka
                 menu katalog produk sembako dan kebutuhan harian Kios Berkat Indah.</p>
@@ -664,23 +664,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DDA15E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
 
-    <!-- Mobile Hamburger Menu -->
-    <div id="hamburger-menu" class="sm:hidden fixed bottom-6 left-6 z-[55]">
-        <button id="btn-hamburger" onclick="toggleHamburgerMenu()"
-            class="w-14 h-14 bg-burgundy hover:bg-opacity-90 rounded-full shadow-lg border border-gold border-opacity-30 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95">
-            <i data-lucide="menu" class="w-6 h-6 text-gold"></i>
-        </button>
-        <div id="hamburger-dropdown" class="hidden absolute bottom-full left-0 mb-3 w-44 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 overflow-hidden">
-            <button onclick="openMapsModal(); toggleHamburgerMenu()" class="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-3 active:bg-gray-100">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-burgundy"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Lokasi
-            </button>
-            <button onclick="var u=document.getElementById('btn-user-menu');if(u&&!u.offsetParent){openUserMenuMobile()}else{openUserMenu()};toggleHamburgerMenu()" class="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-3 active:bg-gray-100">
-                <i data-lucide="user" class="w-[18px] h-[18px] text-burgundy"></i>
-                Akun
-            </button>
-        </div>
-    </div>
+
 
     <style>
     .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -725,9 +709,7 @@
 
             <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] lg:text-xs text-gray-400 gap-4">
                 <p>&copy; <span id="copyright-year">2026</span> Kios Berkat Indah. All rights reserved.</p>
-                <p class="flex items-center gap-1">Web Design <a
-                        href="https://www.instagram.com/luisraja_?igsh=eXVoYnJ2am1uNXpz" target="_blank"
-                        class="text-gold font-semibold hover:text-white transition-colors">Basa Raja</a></p>
+
             </div>
         </div>
     </footer>
