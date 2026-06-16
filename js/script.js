@@ -1,6 +1,9 @@
 const API_BASE = (window.location.hostname === 'luisraja.github.io')
   ? 'https://kiosberkatindah-production.up.railway.app/api'
   : '/api';
+const BASE_PATH = (window.location.hostname === 'luisraja.github.io')
+  ? '/KIOSBERKATINDAH'
+  : '';
 const MAX_LIMIT_PER_PRODUCT = 3;
 
 let shoppingCart = {};
@@ -151,8 +154,8 @@ async function loadProducts() {
                 nama: p.name,
                 harga: p.price,
                 stok: p.stock,
-                image: p.image && p.image.startsWith('/') ? p.image : (p.image ? '/img/' + p.image : '/img/placeholder.svg'),
-                highlight: p.image && p.image.startsWith('/') ? p.image : (p.image ? '/img/' + p.image : '/img/placeholder.svg')
+                image: p.image && p.image.startsWith('/') ? p.image : (p.image ? BASE_PATH + '/img/' + p.image : BASE_PATH + '/img/placeholder.svg'),
+                highlight: p.image && p.image.startsWith('/') ? p.image : (p.image ? BASE_PATH + '/img/' + p.image : BASE_PATH + '/img/placeholder.svg')
             }));
             renderProductGrid();
             document.getElementById('api-error')?.classList.add('hidden');
