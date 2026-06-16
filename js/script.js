@@ -1,4 +1,6 @@
-const API_BASE = '/api';
+const API_BASE = (window.location.hostname === 'luisraja.github.io')
+  ? 'https://kiosberkatindah-production.up.railway.app/api'
+  : '/api';
 const MAX_LIMIT_PER_PRODUCT = 3;
 
 let shoppingCart = {};
@@ -200,7 +202,7 @@ let storeOpen = true;
 
 async function checkStoreStatus() {
     try {
-        const res = await fetch('/api/store-status');
+        const res = await fetch(API_BASE + '/store-status');
         const data = await res.json();
         storeOpen = data.isOpen;
     } catch (e) {
