@@ -329,7 +329,7 @@ async function submitOrder() {
         return;
     }
     if (!currentUser) {
-        closeConfirmation();
+        window.pendingSubmitAfterLogin = true;
         openAuthModal();
         return;
     }
@@ -1425,6 +1425,10 @@ async function submitBuyerLogin() {
             currentUser = { ...res.data, role: 'buyer' };
             updateUserMenu();
             closeAuthModal();
+            if (window.pendingSubmitAfterLogin) {
+                window.pendingSubmitAfterLogin = false;
+                setTimeout(submitOrder, 300);
+            }
         } else {
             errorEl.textContent = res.error || 'Login gagal';
             errorEl.classList.remove('hidden');
@@ -1436,8 +1440,6 @@ async function submitBuyerLogin() {
     btn.textContent = 'Masuk';
     btn.removeAttribute('disabled');
 }
-
-
 
 function toggleAuthMode() {
     const buyerForm = document.getElementById('auth-buyer-form');
@@ -1502,6 +1504,10 @@ async function submitRegister() {
             currentUser = { ...res.data, role: 'buyer' };
             updateUserMenu();
             closeAuthModal();
+            if (window.pendingSubmitAfterLogin) {
+                window.pendingSubmitAfterLogin = false;
+                setTimeout(submitOrder, 300);
+            }
         } else {
             errorEl.textContent = res.error || 'Daftar gagal';
             errorEl.classList.remove('hidden');
