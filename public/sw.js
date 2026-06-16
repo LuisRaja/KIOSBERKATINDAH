@@ -1,9 +1,9 @@
 const CACHE_NAME = 'kios-berkat-indah-v2';
 const urlsToCache = [
-    '/',
-    '/css/style.css',
-    '/js/script.js',
-    '/css/tailwind.css',
+    './',
+    './css/style.css',
+    './js/script.js',
+    './css/tailwind.css',
     'https://unpkg.com/lucide@latest',
     'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap'
 ];
