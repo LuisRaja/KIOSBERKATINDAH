@@ -50,9 +50,9 @@ function showToast(message, type) {
     if (existing) existing.remove();
     const toast = document.createElement('div');
     toast.className = 'toast-notification fixed top-4 right-4 z-[999] px-5 py-3 rounded-2xl text-sm font-medium shadow-lg transition-all duration-300 translate-x-0';
-    toast.style.background = type === 'error' ? '#fee2e2' : '#dcfce7';
-    toast.style.color = type === 'error' ? '#991b1b' : '#166534';
-    toast.style.border = type === 'error' ? '1px solid #fca5a5' : '1px solid #86efac';
+    toast.style.background = type === 'error' ? '#fee2e2' : type === 'info' ? '#dbeafe' : '#dcfce7';
+    toast.style.color = type === 'error' ? '#991b1b' : type === 'info' ? '#1e40af' : '#166534';
+    toast.style.border = type === 'error' ? '1px solid #fca5a5' : type === 'info' ? '1px solid #93c5fd' : '1px solid #86efac';
     toast.textContent = message;
     document.body.appendChild(toast);
     setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
@@ -87,6 +87,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => showToast('Login Google gagal, coba lagi', 'error'), 500);
     }
 });
+
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+});
+
+function installApp() {
+    if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(result => {
+            if (result.outcome === 'accepted') {
+                showToast('App berhasil diinstall!', 'success');
+            }
+            deferredInstallPrompt = null;
+        });
+    } else {
+        showToast('Buka di Chrome dan cari menu "Add to Home Screen"', 'info');
+    }
+}
 
 function registerSW() {
     if ('serviceWorker' in navigator) {
