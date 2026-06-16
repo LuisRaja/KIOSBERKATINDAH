@@ -1150,6 +1150,38 @@ function openUserMenuMobile() {
     }
 }
 
+function openBurgerMenu() {
+    const dropdown = document.getElementById('burger-dropdown');
+    const overlay = document.getElementById('burger-overlay');
+
+    if (dropdown.classList.contains('hidden')) {
+        dropdown.classList.remove('hidden');
+        if (!overlay) {
+            const o = document.createElement('div');
+            o.id = 'burger-overlay';
+            o.className = 'fixed inset-0 z-30 bg-transparent';
+            o.onclick = closeBurgerMenu;
+            document.body.appendChild(o);
+        } else {
+            overlay.classList.remove('hidden');
+        }
+    } else {
+        closeBurgerMenu();
+    }
+}
+
+function closeBurgerMenu() {
+    const dropdown = document.getElementById('burger-dropdown');
+    const overlay = document.getElementById('burger-overlay');
+    dropdown?.classList.add('hidden');
+    overlay?.classList.add('hidden');
+}
+
+function hideBurgerButton() {
+    const wrapper = document.getElementById('burger-wrapper');
+    if (wrapper) wrapper.classList.add('hidden');
+}
+
 async function openUserMenu() {
     if (!currentUser) {
         openAuthModal();
@@ -1183,6 +1215,14 @@ function closeUserMenu() {
     const overlay = document.getElementById('user-overlay');
     dropdown?.classList.add('hidden');
     overlay?.classList.add('hidden');
+}
+
+function toggleUserMenu() {
+    if (currentUser) {
+        openUserMenu();
+    } else {
+        openAuthModal();
+    }
 }
 
 function showTerms() {

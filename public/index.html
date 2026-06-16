@@ -11,10 +11,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tailwind.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/webp" sizes="48x48" href="icons/icon-48.webp">
-    <link rel="icon" type="image/webp" sizes="96x96" href="icons/icon-96.webp">
-    <link rel="icon" type="image/webp" sizes="192x192" href="icons/icon-192.webp">
-    <link rel="apple-touch-icon" href="icons/icon-192.webp">
+    <link rel="icon" type="image/png" href="logo-app.png">
+    <link rel="apple-touch-icon" href="logo-app.png">
     <meta name="theme-color" content="#4A0E17">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,6 +41,24 @@
                     <span id="cart-badge"
                         class="absolute -top-1 -right-1 bg-gold text-burgundy text-xs font-black rounded-full w-5 h-5 lg:w-6 lg:h-6 lg:text-sm flex items-center justify-center scale-0 transition-transform duration-300">0</span>
                 </button>
+                <div class="relative" id="burger-wrapper">
+                    <button id="btn-burger-menu" onclick="openBurgerMenu()"
+                        class="p-3 lg:p-4 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
+                        aria-label="Menu">
+                        <i data-lucide="menu" id="burger-icon" class="w-6 h-6 lg:w-7 lg:h-7 text-gold group-hover:scale-110 transition-transform"></i>
+                    </button>
+                    <div id="burger-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                        <button id="burger-account" onclick="closeBurgerMenu(); openAuthModal()" class="hidden w-full text-left px-4 py-3 text-sm font-semibold text-burgundy hover:bg-gray-50 flex items-center gap-2">
+                            <i data-lucide="log-in" class="w-4 h-4"></i> Akun
+                        </button>
+                        <button onclick="closeBurgerMenu(); openMapsModal()" class="w-full text-left px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-burgundy"></i> Lokasi
+                        </button>
+                        <button id="burger-ayo-belanja" onclick="closeBurgerMenu(); hideBurgerButton(); activateShoppingMenu()" class="w-full text-left px-4 py-3 text-sm font-bold text-gold hover:bg-gray-50 flex items-center gap-2">
+                            <i data-lucide="shopping-cart" class="w-4 h-4 text-gold"></i> Ayo Belanja
+                        </button>
+                    </div>
+                </div>
                 <div class="relative">
                     <button id="btn-user-menu" onclick="openUserMenu()"
                         class="p-3 lg:p-4 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
