@@ -454,16 +454,8 @@ function showQRISPayment(order) {
     const waLink = document.getElementById('qris-wa-link');
     waLink.href = `https://wa.me/${storeSettings.whatsapp_number || '6281246005284'}?text=${encodeURIComponent('Halo Kios Berkat Indah,\n\nSaya sudah membayar pesanan:\nNo. Order: ' + order.order_number + '\nTotal: ' + formatRupiah(order.total) + '\n\nMohon konfirmasi. Terima kasih.')}`;
 
-    fetchAPI('/orders/qris/config').then(qrisRes => {
-        if (qrisRes.success && qrisRes.data.image) {
-            document.getElementById('qris-image').src = qrisRes.data.image;
-            document.getElementById('qris-name').textContent = qrisRes.data.name || '';
-        } else {
-            document.getElementById('qris-display').innerHTML = '<p class="text-xs text-amber-600">QRIS belum dikonfigurasi admin. Silakan hubungi admin.</p>';
-        }
-    }).catch(() => {
-        document.getElementById('qris-display').innerHTML = '<p class="text-xs text-red-500">Gagal memuat QRIS</p>';
-    });
+    document.getElementById('qris-image').src = BASE_PATH + '/barcode.png';
+    document.getElementById('qris-name').textContent = 'Kios Berkat Indah';
 
     const fileInput = document.getElementById('proof-upload-input');
     fileInput.value = '';
