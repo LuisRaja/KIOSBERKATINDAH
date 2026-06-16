@@ -123,7 +123,7 @@
                 menu katalog produk sembako dan kebutuhan harian Kios Berkat Indah.</p>
             <button onclick="activateShoppingMenu()"
                 class="bg-burgundy text-white hover:bg-opacity-90 font-bold py-4 lg:py-5 px-8 lg:px-12 rounded-2xl lg:rounded-3xl transition-all duration-300 shadow-lg text-base lg:text-lg tracking-wide flex items-center gap-3 group">
-                <span>AYO BELANJA</span>
+                <span>MAI BELANJA</span>
                 <i data-lucide="arrow-right"
                     class="w-5 h-5 lg:w-6 lg:h-6 text-gold group-hover:translate-x-1 transition-transform"></i>
             </button>
@@ -309,14 +309,14 @@
                         <div>
                             <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                                 for="pickup-date">Tanggal Ambil *</label>
-                            <input type="date" id="pickup-date" onchange="validateForm()"
+                            <input type="date" id="pickup-date" onchange="handleCustomerInput()"
                                 class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                             <span id="pickup-date-error" class="error-message"></span>
                         </div>
                         <div>
                             <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                                 for="pickup-time">Jam Ambil *</label>
-                            <input type="time" id="pickup-time" onchange="validateForm()"
+                            <input type="time" id="pickup-time" onchange="handleCustomerInput()"
                                 class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                             <span id="pickup-time-error" class="error-message"></span>
                         </div>
@@ -324,7 +324,7 @@
 
                     <div>
                         <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2">Catatan untuk Kios</label>
-                        <textarea id="order-notes" placeholder="Opsional: tulis catatan untuk pesanan Anda..." rows="3"
+                        <textarea id="order-notes" oninput="handleCustomerInput()" placeholder="Opsional: tulis catatan untuk pesanan Anda..." rows="3"
                             class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all resize-none"></textarea>
                     </div>
                     <div class="border-t border-gray-100 pt-4 lg:pt-5 space-y-1.5">

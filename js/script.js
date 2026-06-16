@@ -192,15 +192,27 @@ async function loadProducts() {
 function saveCustomerData() {
     const customerName = document.getElementById('customer-name').value.trim();
     const customerPhone = document.getElementById('customer-phone').value.trim();
+    const pickupDate = document.getElementById('pickup-date').value;
+    const pickupTime = document.getElementById('pickup-time').value;
+    const notes = document.getElementById('order-notes')?.value.trim() || '';
     safeSetItem('kios_customer_name', customerName);
     safeSetItem('kios_customer_phone', customerPhone);
+    safeSetItem('kios_pickup_date', pickupDate);
+    safeSetItem('kios_pickup_time', pickupTime);
+    safeSetItem('kios_order_notes', notes);
 }
 
 function loadSavedCustomerData() {
     const savedName = safeGetItem('kios_customer_name');
     const savedPhone = safeGetItem('kios_customer_phone');
+    const savedDate = safeGetItem('kios_pickup_date');
+    const savedTime = safeGetItem('kios_pickup_time');
+    const savedNotes = safeGetItem('kios_order_notes');
     if (savedName) document.getElementById('customer-name').value = savedName;
     if (savedPhone) document.getElementById('customer-phone').value = savedPhone;
+    if (savedDate) document.getElementById('pickup-date').value = savedDate;
+    if (savedTime) document.getElementById('pickup-time').value = savedTime;
+    if (savedNotes) document.getElementById('order-notes').value = savedNotes;
 }
 
 function saveCart() {
@@ -1543,8 +1555,6 @@ function updateUserMenu() {
     const btn = document.getElementById('btn-user-menu');
     if (currentUser) {
         btn.innerHTML = `<i data-lucide="user" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>`;
-        document.getElementById('customer-name').value = currentUser.name || '';
-        saveCustomerData();
         lucide.createIcons();
     } else {
         btn.innerHTML = `<i data-lucide="user" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>`;
