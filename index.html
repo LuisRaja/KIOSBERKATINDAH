@@ -26,28 +26,28 @@
 
     <header
         class="sticky top-0 z-40 bg-burgundy text-white shadow-md backdrop-blur-md bg-opacity-95 border-b border-gold border-opacity-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 lg:h-24 flex items-center justify-between">
             <div>
-                <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                <h1 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-extrabold tracking-tight text-white flex items-center gap-2">
                     <span class="text-gold">Kios</span> Berkat Indah
                 </h1>
-                <p class="text-[10px] sm:text-xs text-gray-300 tracking-widest uppercase font-medium">Kios Murah Area
+                <p class="text-[10px] sm:text-xs lg:text-sm text-gray-300 tracking-widest uppercase font-medium">Kios Murah Area
                     Rewarangga Selatan</p>
             </div>
 
             <div class="flex items-center gap-2">
                 <button id="btn-cart-header" onclick="toggleCart(true)"
-                    class="hidden p-3 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group relative"
+                    class="hidden p-3 lg:p-4 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group relative"
                     aria-label="Buka keranjang belanja">
-                    <i data-lucide="shopping-bag" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>
+                    <i data-lucide="shopping-bag" class="w-6 h-6 lg:w-7 lg:h-7 text-gold group-hover:scale-110 transition-transform"></i>
                     <span id="cart-badge"
-                        class="absolute -top-1 -right-1 bg-gold text-burgundy text-xs font-black rounded-full w-5 h-5 flex items-center justify-center scale-0 transition-transform duration-300">0</span>
+                        class="absolute -top-1 -right-1 bg-gold text-burgundy text-xs font-black rounded-full w-5 h-5 lg:w-6 lg:h-6 lg:text-sm flex items-center justify-center scale-0 transition-transform duration-300">0</span>
                 </button>
                 <div class="relative">
                     <button id="btn-user-menu" onclick="openUserMenu()"
-                        class="p-3 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
+                        class="p-3 lg:p-4 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full transition-all duration-300 border border-white border-opacity-20 flex items-center justify-center group"
                         aria-label="Akun saya">
-                        <i data-lucide="user" class="w-6 h-6 text-gold group-hover:scale-110 transition-transform"></i>
+                        <i data-lucide="user" class="w-6 h-6 lg:w-7 lg:h-7 text-gold group-hover:scale-110 transition-transform"></i>
                     </button>
                     <div id="user-dropdown" class="hidden absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
                         <div id="dropdown-logged-in" class="hidden">
@@ -76,40 +76,40 @@
         </div>
     </header>
 
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
         <div
-            class="mb-8 p-6 sm:p-8 bg-gradient-to-br from-[#5A121D] to-[#4A0E17] rounded-3xl text-white relative overflow-hidden shadow-lg border border-gold border-opacity-20">
-            <div class="relative z-10 max-w-xl">
-                <div class="flex flex-wrap items-center gap-2 mb-3">
+            class="mb-8 lg:mb-12 p-6 sm:p-8 lg:p-12 bg-gradient-to-br from-[#5A121D] to-[#4A0E17] rounded-3xl lg:rounded-[2rem] text-white relative overflow-hidden shadow-lg border border-gold border-opacity-20">
+            <div class="relative z-10 max-w-xl lg:max-w-2xl">
+                <div class="flex flex-wrap items-center gap-2 lg:gap-3 mb-3 lg:mb-4">
                     <span
-                        class="text-[10px] sm:text-xs font-bold text-gold bg-white bg-opacity-10 px-3 py-1 rounded-full uppercase tracking-wider">Belanja
+                        class="text-[10px] sm:text-xs lg:text-sm font-bold text-gold bg-white bg-opacity-10 px-3 py-1 lg:px-4 lg:py-1.5 rounded-full uppercase tracking-wider">Belanja
                         Praktis Dari Rumah</span>
                     <span id="store-status-badge"
-                        class="text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300"></span>
+                        class="text-[10px] sm:text-xs lg:text-sm font-bold px-3 py-1 lg:px-4 lg:py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300"></span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold mt-3 tracking-tight">Katalog Sembako & Kebutuhan
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold mt-3 lg:mt-4 tracking-tight lg:leading-tight">Katalog Sembako & Kebutuhan
                     Kelontong Utama</h2>
-                <p class="text-xs sm:text-sm text-gray-200 mt-2 leading-relaxed">Pilih barang kebutuhan utama rumah
+                <p class="text-xs sm:text-sm lg:text-base text-gray-200 mt-2 lg:mt-3 leading-relaxed">Pilih barang kebutuhan utama rumah
                     tangga Anda di bawah ini, tentukan jumlahnya, lalu ORDER dan pilih metode pembayaran.</p>
             </div>
             <div
                 class="absolute right-0 bottom-0 top-0 opacity-10 pointer-events-none hidden md:flex items-center justify-center pr-10">
-                <i data-lucide="store" class="w-48 h-48 text-white"></i>
+                <i data-lucide="store" class="w-48 h-48 lg:w-64 lg:h-64 text-white"></i>
             </div>
         </div>
 
         <div id="landing-menu-container"
-            class="flex flex-col items-center justify-center py-12 bg-white rounded-3xl border border-gray-100 shadow-sm p-8 transition-all">
-            <i data-lucide="shopping-cart" class="w-16 h-16 text-gold mb-4"></i>
-            <h3 class="text-xl font-bold text-burgundy mb-2">Siap Memenuhi Kebutuhan Rumah Tangga Anda?</h3>
-            <p class="text-sm text-gray-500 text-center max-w-md mb-6">Silakan klik tombol di bawah ini untuk membuka
+            class="flex flex-col items-center justify-center py-12 lg:py-20 bg-white rounded-3xl lg:rounded-[2rem] border border-gray-100 shadow-sm p-8 lg:p-12 transition-all">
+            <i data-lucide="shopping-cart" class="w-16 h-16 lg:w-20 lg:h-20 text-gold mb-4 lg:mb-6"></i>
+            <h3 class="text-xl lg:text-2xl xl:text-3xl font-bold text-burgundy mb-2 lg:mb-3">Siap Memenuhi Kebutuhan Rumah Tangga Anda?</h3>
+            <p class="text-sm lg:text-base text-gray-500 text-center max-w-md lg:max-w-lg mb-6 lg:mb-8">Silakan klik tombol di bawah ini untuk membuka
                 menu katalog produk sembako dan kebutuhan harian Kios Berkat Indah.</p>
             <button onclick="activateShoppingMenu()"
-                class="bg-burgundy text-white hover:bg-opacity-90 font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-lg text-base tracking-wide flex items-center gap-3 group">
+                class="bg-burgundy text-white hover:bg-opacity-90 font-bold py-4 lg:py-5 px-8 lg:px-12 rounded-2xl lg:rounded-3xl transition-all duration-300 shadow-lg text-base lg:text-lg tracking-wide flex items-center gap-3 group">
                 <span>AYO BELANJA</span>
                 <i data-lucide="arrow-right"
-                    class="w-5 h-5 text-gold group-hover:translate-x-1 transition-transform"></i>
+                    class="w-5 h-5 lg:w-6 lg:h-6 text-gold group-hover:translate-x-1 transition-transform"></i>
             </button>
         </div>
 
@@ -118,58 +118,58 @@
             <span>Gagal memuat data dari server. Pastikan server <strong>npm start</strong> sudah berjalan dan akses melalui <strong>http://localhost:3000</strong>.</span>
         </div>
 
-        <div id="catalog-section" class="hidden space-y-6">
+        <div id="catalog-section" class="hidden space-y-6 lg:space-y-8">
             <div
-                class="grid grid-cols-1 md:grid-cols-12 items-stretch md:items-end gap-4 bg-white p-5 rounded-3xl border border-gray-100 shadow-sm">
+                class="grid grid-cols-1 md:grid-cols-12 items-stretch md:items-end gap-4 lg:gap-6 bg-white p-5 lg:p-6 rounded-3xl lg:rounded-[2rem] border border-gray-100 shadow-sm">
                 <div class="md:col-span-4 min-w-0">
                     <label
-                        class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                        <i data-lucide="filter" class="w-3.5 h-3.5 text-gold"></i> Pilih Kategori Produk
+                        class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2 flex items-center gap-1">
+                        <i data-lucide="filter" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gold"></i> Pilih Kategori Produk
                     </label>
                     <div class="relative">
                         <select id="category-dropdown" onchange="filterByCategory(this.value)"
-                            class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy appearance-none cursor-pointer">
+                            class="w-full px-4 py-2.5 lg:py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm lg:text-base font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy appearance-none cursor-pointer">
                         </select>
                         <div
                             class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
-                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            <i data-lucide="chevron-down" class="w-4 h-4 lg:w-5 lg:h-5"></i>
                         </div>
                     </div>
                 </div>
 
                 <div class="md:col-span-5 min-w-0">
                     <label
-                        class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                        <i data-lucide="search" class="w-3.5 h-3.5 text-gold"></i> Cari Nama Produk
+                        class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2 flex items-center gap-1">
+                        <i data-lucide="search" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gold"></i> Cari Nama Produk
                     </label>
                     <div class="relative">
                         <input type="text" id="search-input" oninput="handleSearch(this.value)"
                             placeholder="Cari beras, mi instan, kopi, rokok..."
-                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
+                            class="w-full pl-10 pr-4 py-2.5 lg:py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm lg:text-base font-semibold text-gray-700 outline-none focus:ring-1 focus:ring-burgundy focus:border-burgundy transition-all">
                         <div
                             class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400">
-                            <i data-lucide="search" class="w-4 h-4"></i>
+                            <i data-lucide="search" class="w-4 h-4 lg:w-5 lg:h-5"></i>
                         </div>
                     </div>
                 </div>
 
-                <div class="md:col-span-2 text-xs text-gray-400 font-medium md:text-right self-center md:pb-3">
+                <div class="md:col-span-2 text-xs lg:text-sm text-gray-400 font-medium md:text-right self-center md:pb-3">
                     Kategori: <span id="active-category-label" class="text-burgundy font-bold uppercase">Semua
                         Produk</span>
                 </div>
                 <div class="md:col-span-1 self-center md:pb-3 flex justify-end">
                     <div class="flex items-center bg-gray-100 rounded-lg p-0.5">
-                        <button onclick="setViewMode('grid')" id="view-grid-btn" class="p-1.5 rounded-md transition-all" aria-label="Tampilan Grid">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <button onclick="setViewMode('grid')" id="view-grid-btn" class="p-1.5 lg:p-2 rounded-md transition-all" aria-label="Tampilan Grid">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lg:w-5 lg:h-5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                         </button>
-                        <button onclick="setViewMode('list')" id="view-list-btn" class="p-1.5 rounded-md transition-all" aria-label="Tampilan Daftar">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <button onclick="setViewMode('list')" id="view-list-btn" class="p-1.5 lg:p-2 rounded-md transition-all" aria-label="Tampilan Daftar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lg:w-5 lg:h-5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+            <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8"></div>
         </div>
     </main>
 
@@ -179,46 +179,46 @@
     <div id="order-confirm-modal"
         class="fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
         <div onclick="event.stopPropagation()"
-            class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            class="bg-white rounded-3xl lg:rounded-[2rem] shadow-2xl w-full max-w-lg lg:max-w-xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
             <div
-                class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+                class="sticky top-0 bg-white rounded-t-3xl lg:rounded-t-[2rem] border-b border-gray-100 p-5 lg:p-6 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
-                        <i data-lucide="clipboard-list" class="w-5 h-5 text-burgundy"></i>
+                    <div class="w-10 h-10 lg:w-12 lg:h-12 bg-gold rounded-full flex items-center justify-center">
+                        <i data-lucide="clipboard-list" class="w-5 h-5 lg:w-6 lg:h-6 text-burgundy"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-gray-800 text-sm">Konfirmasi Pesanan</h3>
-                        <p class="text-[11px] text-gray-400">Periksa kembali pesanan Anda</p>
+                        <h3 class="font-bold text-gray-800 text-sm lg:text-base">Konfirmasi Pesanan</h3>
+                        <p class="text-[11px] lg:text-xs text-gray-400">Periksa kembali pesanan Anda</p>
                     </div>
                 </div>
                 <button onclick="closeConfirmation()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors" aria-label="Tutup konfirmasi">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+                    <i data-lucide="x" class="w-5 h-5 lg:w-6 lg:h-6"></i>
                 </button>
             </div>
-            <div class="p-5 confirm-body space-y-4"></div>
-            <div class="sticky bottom-0 bg-white rounded-b-3xl border-t border-gray-100 p-4 flex flex-col gap-2">
+            <div class="p-5 lg:p-6 confirm-body space-y-4 lg:space-y-5"></div>
+            <div class="sticky bottom-0 bg-white rounded-b-3xl lg:rounded-b-[2rem] border-t border-gray-100 p-4 lg:p-5 flex flex-col gap-2">
                 <!-- Mode: Payment Selection -->
                 <div id="confirm-payment-buttons" class="hidden">
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-2 gap-2 lg:gap-3">
                         <button id="btn-prev-step" onclick="prevFormStep()"
-                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 lg:py-3.5 px-4 rounded-xl lg:rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm lg:text-base tracking-wide">
+                            <i data-lucide="arrow-left" class="w-4 h-4 lg:w-5 lg:h-5"></i>
                             Kembali
                         </button>
                         <button id="btn-submit-order" onclick="submitOrder()" disabled
-                            class="w-full bg-gray-300 text-gray-500 font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-60">
-                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                            class="w-full bg-gray-300 text-gray-500 font-bold py-3 lg:py-3.5 px-4 rounded-xl lg:rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm lg:text-base tracking-wide cursor-not-allowed opacity-60">
+                            <i data-lucide="shopping-cart" class="w-4 h-4 lg:w-5 lg:h-5"></i>
                             Buat Pesanan
                         </button>
                     </div>
                 </div>
                 <!-- Mode: Done -->
-                <div id="confirm-done-buttons">
-                    <button class="confirm-ok w-full bg-burgundy hover:bg-opacity-90 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm shadow-md">
-                        <i data-lucide="check" class="w-4 h-4"></i>
+                <div id="confirm-done-buttons" class="space-y-2">
+                    <button class="confirm-ok w-full bg-burgundy hover:bg-opacity-90 text-white font-bold py-3 lg:py-3.5 px-4 rounded-xl lg:rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm lg:text-base shadow-md">
+                        <i data-lucide="check" class="w-4 h-4 lg:w-5 lg:h-5"></i>
                         OK, Saya Mengerti
                     </button>
-                    <button onclick="closeConfirmation()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 px-4 rounded-xl transition-all duration-300 text-sm">
+                    <button onclick="closeConfirmation()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-2.5 lg:py-3 px-4 rounded-xl lg:rounded-2xl transition-all duration-300 text-sm lg:text-base">
                         Tutup
                     </button>
                 </div>
@@ -230,10 +230,10 @@
         class="fixed inset-0 bg-black bg-opacity-60 z-50 pointer-events-none opacity-0 transition-opacity duration-300 backdrop-blur-sm">
     </div>
     <div id="cart-drawer"
-        class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4">
+        class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 sm:p-6">
         <div onclick="event.stopPropagation()"
-            class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
-            <div class="sticky top-0 bg-white rounded-t-3xl border-b border-gray-100 p-5 flex items-center justify-between z-10">
+            class="bg-white rounded-3xl lg:rounded-[2rem] shadow-2xl w-full max-w-lg lg:max-w-xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="sticky top-0 bg-white rounded-t-3xl lg:rounded-t-[2rem] border-b border-gray-100 p-5 lg:p-6 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
                         <i data-lucide="shopping-cart" class="w-5 h-5 text-burgundy"></i>
@@ -248,38 +248,38 @@
                 </button>
             </div>
 
-            <div id="cart-items-container" class="px-5 pt-5 pb-2 space-y-3 max-h-[35vh] overflow-y-auto border-b border-gray-100"></div>
+            <div id="cart-items-container" class="px-5 lg:px-6 pt-5 lg:pt-6 pb-2 space-y-3 max-h-[35vh] lg:max-h-[45vh] overflow-y-auto border-b border-gray-100"></div>
 
-            <div class="p-5 space-y-5">
+            <div class="p-5 lg:p-6 space-y-5 lg:space-y-6">
                 <!-- Step 1: Data Pemesan -->
-                <div id="cart-step-1" class="space-y-4">
+                <div id="cart-step-1" class="space-y-4 lg:space-y-5">
                     <div>
-                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5"
+                        <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                             for="customer-name">Nama Pemesan *</label>
                         <input type="text" id="customer-name" oninput="handleCustomerInput()"
                             placeholder="Contoh: Ibu Maria Mery"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                            class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                         <span id="customer-name-error" class="error-message"></span>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5"
+                        <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                             for="customer-phone">Nomor Telepon / WA *</label>
                         <input type="tel" id="customer-phone" oninput="handleCustomerInput()" placeholder="Contoh: 0812XXXXXXXX"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                            class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                         <span id="customer-phone-error" class="error-message"></span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5">Metode Pengambilan
+                        <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2">Metode Pengambilan
                             Barang *</label>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-3 lg:gap-4">
                             <label
-                                class="flex items-center gap-2.5 bg-white border border-burgundy p-3 rounded-xl cursor-pointer text-xs font-semibold text-burgundy">
+                                class="flex items-center gap-2.5 bg-white border border-burgundy p-3 lg:p-4 rounded-xl lg:rounded-2xl cursor-pointer text-xs lg:text-sm font-semibold text-burgundy">
                                 <input type="radio" name="shipping-method" value="Ambil Sendiri" checked>
                                 Ambil di Kios
                             </label>
                             <label
-                                class="flex items-center gap-2.5 bg-gray-100 border border-gray-200 p-3 rounded-xl cursor-not-allowed text-xs font-semibold text-gray-400 relative group">
+                                class="flex items-center gap-2.5 bg-gray-100 border border-gray-200 p-3 lg:p-4 rounded-xl lg:rounded-2xl cursor-not-allowed text-xs lg:text-sm font-semibold text-gray-400 relative group">
                                 <input type="radio" name="shipping-method" value="Kirim Lokasi" disabled>
                                 Kirim ke Lokasi
                                 <span
@@ -289,42 +289,42 @@
                         </div>
                     </div>
 
-                    <div id="pickup-schedule-box" class="grid grid-cols-2 gap-3">
+                    <div id="pickup-schedule-box" class="grid grid-cols-2 gap-3 lg:gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5"
+                            <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                                 for="pickup-date">Tanggal Ambil *</label>
                             <input type="date" id="pickup-date" onchange="validateForm()"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                                class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                             <span id="pickup-date-error" class="error-message"></span>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5"
+                            <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2"
                                 for="pickup-time">Jam Ambil *</label>
                             <input type="time" id="pickup-time" onchange="validateForm()"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
+                                class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all">
                             <span id="pickup-time-error" class="error-message"></span>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-burgundy uppercase tracking-wider mb-1.5">Catatan untuk Kios</label>
+                        <label class="block text-xs lg:text-sm font-bold text-burgundy uppercase tracking-wider mb-1.5 lg:mb-2">Catatan untuk Kios</label>
                         <textarea id="order-notes" placeholder="Opsional: tulis catatan untuk pesanan Anda..." rows="3"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all resize-none"></textarea>
+                            class="w-full px-4 py-3 lg:py-3.5 border border-gray-200 rounded-xl text-sm lg:text-base focus:ring-1 focus:ring-burgundy focus:border-burgundy outline-none bg-white transition-all resize-none"></textarea>
                     </div>
-                    <div class="border-t border-gray-100 pt-4 space-y-1.5">
-                        <div class="flex justify-between text-xs text-gray-500">
+                    <div class="border-t border-gray-100 pt-4 lg:pt-5 space-y-1.5">
+                        <div class="flex justify-between text-xs lg:text-sm text-gray-500">
                             <span>Jumlah Keseluruhan Barang:</span>
                             <span id="cart-total-qty" class="font-semibold text-gray-800">0 Item</span>
                         </div>
                         <div class="flex justify-between items-baseline">
-                            <span class="text-sm font-bold text-burgundy">Total Estimasi:</span>
-                            <span id="cart-total-price" class="text-xl font-extrabold text-burgundy">Rp 0</span>
+                            <span class="text-sm lg:text-base font-bold text-burgundy">Total Estimasi:</span>
+                            <span id="cart-total-price" class="text-xl lg:text-2xl font-extrabold text-burgundy">Rp 0</span>
                         </div>
                     </div>
 
                     <button id="btn-next-step" onclick="nextFormStep()" disabled
-                        class="w-full bg-gray-300 text-gray-500 font-bold py-3.5 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm tracking-wide cursor-not-allowed opacity-60">
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        class="w-full bg-gray-300 text-gray-500 font-bold py-3.5 lg:py-4 px-4 rounded-xl lg:rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 text-sm lg:text-base tracking-wide cursor-not-allowed opacity-60">
+                        <i data-lucide="arrow-right" class="w-5 h-5 lg:w-6 lg:h-6"></i>
                         Lengkapi Data untuk Lanjut
                     </button>
                 </div>
@@ -673,16 +673,30 @@
     </style>
 
     <footer class="bg-burgundy text-white border-t-2 border-gold border-opacity-40 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-                <div class="md:col-span-6 w-full">
-                    <button onclick="toggleFooterMap()" class="flex items-center gap-2 text-xs font-bold text-gold uppercase tracking-wider mb-3 hover:text-white transition-colors">
-                        <i data-lucide="map" class="w-4 h-4"></i> Lokasi Fisik Kios Resmi
-                        <i data-lucide="chevron-down" id="footer-map-chevron" class="w-3.5 h-3.5 transition-transform duration-300"></i>
+                <div class="md:col-span-7 lg:col-span-5 w-full">
+                    <h3 class="text-lg lg:text-xl font-bold text-gold mb-3 lg:mb-4">
+                        <span class="text-white">Kios</span> Berkat Indah
+                    </h3>
+                    <p class="text-xs lg:text-sm text-gray-300 leading-relaxed mb-4 lg:mb-6">
+                        Menyediakan berbagai kebutuhan sembako, minuman segar, produk kelontong pilihan, rokok, hingga kopi lokal berkualitas tinggi untuk wilayah sekitar.
+                    </p>
+                    <div class="space-y-2 text-xs lg:text-sm text-gray-400">
+                        <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-gold flex-shrink-0"></i> Sebelah kanan SMPS Rewarangga, Jl. Alternatif ke Maumere</p>
+                        <p class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-gold flex-shrink-0"></i> Senin - Sabtu: 06.00 AM - 07.00 PM</p>
+                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-gold flex-shrink-0"></i> +62 812-4600-5284</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 lg:col-span-4 w-full">
+                    <button onclick="toggleFooterMap()" class="flex items-center gap-2 text-xs lg:text-sm font-bold text-gold uppercase tracking-wider mb-3 lg:mb-4 hover:text-white transition-colors">
+                        <i data-lucide="map" class="w-4 h-4 lg:w-5 lg:h-5"></i> Lokasi Fisik Kios Resmi
+                        <i data-lucide="chevron-down" id="footer-map-chevron" class="w-3.5 h-3.5 lg:w-4 lg:h-4 transition-transform duration-300"></i>
                     </button>
                     <div id="footer-map-container"
-                        class="w-full h-0 rounded-2xl overflow-hidden shadow-lg border border-white border-opacity-10 relative bg-gray-800 transition-all duration-500">
+                        class="w-full h-0 rounded-2xl lg:rounded-3xl overflow-hidden shadow-lg border border-white border-opacity-10 relative bg-gray-800 transition-all duration-500">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.6517656341166!2d121.67781298339116!3d-8.822934110610401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dad5fe27e734fe1%3A0xc52c9b6b3c535fee!2sKIOS%20BERKAT%20INDAH!5e0!3m2!1sen!2sid!4v1780988364730!5m2!1sen!2sid"
                             class="absolute inset-0 w-full h-full border-0" allowfullscreen="" loading="lazy"
@@ -693,9 +707,9 @@
 
             </div>
 
-            <hr class="border-gray-800 my-8">
+            <hr class="border-gray-800 my-8 lg:my-10">
 
-            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] text-gray-400 gap-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between text-[11px] lg:text-xs text-gray-400 gap-4">
                 <p>&copy; <span id="copyright-year">2026</span> Kios Berkat Indah. All rights reserved.</p>
                 <p class="flex items-center gap-1">Web Design <a
                         href="https://www.instagram.com/luisraja_?igsh=eXVoYnJ2am1uNXpz" target="_blank"

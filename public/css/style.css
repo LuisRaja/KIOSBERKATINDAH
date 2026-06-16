@@ -196,3 +196,23 @@ body.dark {
 .dark .border-burgundy {
     border-color: #DDA15E !important;
 }
+
+/* ─── Desktop Enhancements ──────────────────────────── */
+@media (min-width: 1024px) {
+    .error-message {
+        font-size: 12px;
+    }
+
+    #cart-drawer {
+        padding: 1.5rem;
+    }
+
+    #product-grid .product-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #product-grid .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12);
+    }
+}
